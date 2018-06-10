@@ -4,6 +4,8 @@ using CLSoft.MyWallet.Data.Models.Transactions;
 using CLSoft.MyWallet.Data.Repositories;
 using CLSoft.MyWallet.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
@@ -44,6 +46,21 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
         {
             var entity = await GetTransactionEntityByIdAsync(transactionId);
             return Mapper.Current.Map<Transaction>(entity);
+        }
+
+        public async Task<IEnumerable<Transaction>> GetTransactionsAsync(GetTransactionsRequest request)
+        {
+            var query = DbContext.Transactions.AsQueryable();
+
+            if (request.WalletId.HasValue)
+                query = query.Where(w => w.WalletId.Equals(request.WalletId.Value));
+
+            query = query
+                .Skip(request.Page * request.RecordsPerPage)
+                .Take(request.RecordsPerPage);
+
+            var entities = await query.ToArrayAsync();
+            return entities.Select(e => Mapper.Current.Map<Transaction>(e));
         }
 
         private async Task<Entities.Transaction> GetTransactionEntityByIdAsync(long transactionId)

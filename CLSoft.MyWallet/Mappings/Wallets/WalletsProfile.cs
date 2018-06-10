@@ -13,9 +13,12 @@ namespace CLSoft.MyWallet.Mappings.Wallets
     {
         public WalletsProfile()
         {
-            CreateMap<WalletViewModel, Wallet>()
-                .ForMember(d => d.RegisteredOn, s => s.UseValue(TimeProvider.Current.Now))
-                .ForMember(d => d.UserId, s => s.ResolveUsing<UserIdResolver>());
+            CreateMap<WalletViewModel, AddWalletRequest>()
+                .ForMember(d => d.RegisteredOn, o => o.UseValue(TimeProvider.Current.Now))
+                .ForMember(d => d.UserId, o => o.ResolveUsing<UserIdResolver>());
+
+            CreateMap<WalletViewModel, EditWalletRequest>()
+                .ForMember(d => d.UpdatedOn, o => o.UseValue(TimeProvider.Current.Now));
 
             CreateMap<Wallet, WalletViewModel>();
         }

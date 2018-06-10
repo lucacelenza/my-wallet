@@ -6,6 +6,7 @@ namespace CLSoft.MyWallet.Data.Models.Wallets
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public long UserId { get; set; }
         public DateTime RegisteredOn { get; set; }
     }
 }

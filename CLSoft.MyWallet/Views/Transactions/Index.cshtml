@@ -1,7 +1,20 @@
-﻿
+﻿@using CLSoft.MyWallet.Models.Transactions
+@model ITransactionsViewModel
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.DisplayForModel()
+    </tbody>
+</table>

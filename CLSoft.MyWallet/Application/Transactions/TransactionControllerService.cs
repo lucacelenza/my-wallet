@@ -64,5 +64,17 @@ namespace CLSoft.MyWallet.Application.Transactions
 
             return viewModel;
         }
+
+        public async Task<ITransactionsViewModel> GetTransactionsAsync(
+            Models.Transactions.GetTransactionsRequest request = null)
+        {
+            if (request == null)
+                request = new Models.Transactions.GetTransactionsRequest();
+
+            var transactions = await _transactionsRepository.GetTransactionsAsync(
+                Mapper.Current.Map<Data.Models.Transactions.GetTransactionsRequest>(request));
+
+            return Mapper.Current.Map<TransactionsViewModel>(transactions);
+        }
     }
 }

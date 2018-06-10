@@ -1,0 +1,18 @@
+﻿@using CLSoft.MyWallet.Models.Transactions
+@model TransactionsViewModel
+
+@foreach (var transaction in Model.Transactions)
+{
+    <tr>
+        <td>@transaction.Description</td>
+        <td>@transaction.Amount</td>
+    </tr>
+}
+
+<tr>
+    <td colspan="2">
+        <form asp-controller="Transactions" asp-action="GetTransactions" method="get">
+
+        </form>
+    </td>
+</tr>
