@@ -10,6 +10,6 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Entities
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public DateTime RegisteredOn { get; set; }
-        public DateTime UpdatedOn { get; set; }
+        public DateTime? LastUpdatedOn { get; set; }
     }
 }

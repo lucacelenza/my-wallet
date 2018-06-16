@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CLSoft.MyWallet.Data.EntityFramework.Entities
 {
@@ -9,5 +10,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Entities
         public string HashedPassword { get; set; }
         public DateTime RegisteredOn { get; set; }
         public DateTime? PasswordChangedOn { get; set; }
+        public ICollection<Wallet> Wallets { get; set; }
+        public ICollection<ForgotPasswordToken> ForgotPasswordTokens { get; set; }
     }
 }

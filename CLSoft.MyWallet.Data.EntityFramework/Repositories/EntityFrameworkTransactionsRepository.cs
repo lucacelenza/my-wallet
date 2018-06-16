@@ -37,7 +37,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             entity.Description = request.Description;
             entity.Amount = request.Amount;
             entity.WalletId = request.WalletId;
-            entity.UpdatedOn = request.UpdatedOn;
+            entity.LastUpdatedOn = request.UpdatedOn;
 
             await DbContext.SaveChangesAsync();
         }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using CLSoft.MyWallet.Data.EntityFramework.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CLSoft.MyWallet
 {
@@ -24,16 +18,10 @@ namespace CLSoft.MyWallet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services
-                .AddAuthentication("MyWalletCookieScheme")
-                .AddCookie();
+            services.AddDataServices();
+            services.AddApplicationServices();
 
             services.AddMvc();
-
-            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +38,12 @@ namespace CLSoft.MyWallet
             }
 
             app.UseStaticFiles();
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<MyWalletDbContext>();
+                context.Database.EnsureCreated();
+            }
 
             app.UseAuthentication();
 
