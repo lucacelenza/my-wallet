@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Auth;
+using CLSoft.MyWallet.Application.Auth.Exceptions;
 using CLSoft.MyWallet.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace CLSoft.MyWallet.Controllers
 
         public IActionResult ChangePassword(string token)
         {
-            return View();
+            return View("ChangePasswordUsingToken");
         }
 
         [Authorize]
@@ -35,7 +36,17 @@ namespace CLSoft.MyWallet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
-            await _service.ChangePasswordAsync(viewModel);
+            if (ModelState.IsValid)
+            {
+                await _service.ChangePasswordAsync(viewModel);
+                return RedirectToAction("PasswordChanged");
+            }
+
+            return View(viewModel);
+        }
+
+        public IActionResult PasswordChanged()
+        {
             return View();
         }
 
@@ -43,9 +54,31 @@ namespace CLSoft.MyWallet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(string token, ChangePasswordViewModel viewModel)
         {
-            await _service.ChangePasswordAsync(viewModel, token);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _service.ChangePasswordAsync(viewModel, token);
+                    return RedirectToAction("PasswordReset");
+                }
+                catch (ExpiredChangePasswordRequestException)
+                {
+                    return RedirectToAction("TokenExpired");
+                }
+            }
+            
+            return View("ChangePasswordUsingToken", viewModel);
+        }
+
+        public IActionResult TokenExpired()
+        {
             return View();
-        }       
+        }
+
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
 
         public IActionResult Register()
         {
@@ -56,7 +89,17 @@ namespace CLSoft.MyWallet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel viewModel)
         {
-            await _service.RegisterUserAsync(viewModel);
+            if (ModelState.IsValid)
+            {
+                await _service.RegisterUserAsync(viewModel);
+                return RedirectToAction("Registered");
+            }
+            
+            return View(viewModel);
+        }
+
+        public IActionResult Registered()
+        {
             return View();
         }
 
@@ -69,8 +112,13 @@ namespace CLSoft.MyWallet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
-            await _service.LoginAsync(viewModel);
-            return View();
+            if (ModelState.IsValid)
+            {
+                await _service.LoginAsync(viewModel);
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(viewModel);
         }
 
         public IActionResult ForgotPassword()
@@ -82,7 +130,17 @@ namespace CLSoft.MyWallet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
         {
-            await _service.ForgotPasswordAsync(viewModel);
+            if (ModelState.IsValid)
+            {
+                await _service.ForgotPasswordAsync(viewModel);
+                return RedirectToAction("ForgotPasswordRequestSent");
+            }
+            
+            return View(viewModel);
+        }
+
+        public IActionResult ForgotPasswordRequestSent()
+        {
             return View();
         }
 

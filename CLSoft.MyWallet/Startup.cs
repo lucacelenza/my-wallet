@@ -19,6 +19,7 @@ namespace CLSoft.MyWallet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataServices();
+            services.AddBusinessServices();
             services.AddApplicationServices();
 
             services.AddMvc();

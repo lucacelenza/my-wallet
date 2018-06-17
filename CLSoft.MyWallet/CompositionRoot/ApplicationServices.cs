@@ -3,6 +3,10 @@ using CLSoft.MyWallet.Application.Auth;
 using CLSoft.MyWallet.Application.Transactions;
 using CLSoft.MyWallet.Application.Wallets;
 using CLSoft.MyWallet.Business.Email;
+using CLSoft.MyWallet.Business.Encryption;
+using CLSoft.MyWallet.Business.Serialization;
+using CLSoft.MyWallet.Components.Encryption;
+using CLSoft.MyWallet.Components.Serialization;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -28,8 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection AddHttpServices(this IServiceCollection services)
         {
-            services
-                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             return services;
         }

@@ -4,6 +4,7 @@ using CLSoft.MyWallet.Data.Models.Auth;
 using CLSoft.MyWallet.Data.Repositories;
 using CLSoft.MyWallet.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
@@ -53,11 +54,29 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             return Mapper.Current.Map<ForgotPasswordToken>(entity);
         }
 
+        public User GetUserByEmailAddress(string emailAddress)
+        {
+            var entity = QueryUsersCollectionByEmailAddress(emailAddress)
+                .FirstOrDefault();
+
+            return MapEntityToUser(entity);
+        }
+
         public async Task<User> GetUserByEmailAddressAsync(string emailAddress)
         {
-            var entity = await DbContext.Users
-                .FirstOrDefaultAsync(u => u.EmailAddress.Equals(emailAddress));
+            var entity = await QueryUsersCollectionByEmailAddress(emailAddress)
+                .FirstOrDefaultAsync();
 
+            return MapEntityToUser(entity);
+        }
+
+        private IQueryable<Entities.User> QueryUsersCollectionByEmailAddress(string emailAddress)
+        {
+            return DbContext.Users.Where(u => u.EmailAddress.Equals(emailAddress));
+        }
+
+        private User MapEntityToUser(Entities.User entity)
+        {
             if (entity == null)
                 throw new DataNotFoundException();
 
