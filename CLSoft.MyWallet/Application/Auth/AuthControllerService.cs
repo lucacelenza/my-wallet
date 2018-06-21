@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Auth.Exceptions;
-using CLSoft.MyWallet.Business.Email;
 using CLSoft.MyWallet.Business.Encryption;
 using CLSoft.MyWallet.Business.Identity;
-using CLSoft.MyWallet.Business.Time;
+using CLSoft.MyWallet.Business.Password;
 using CLSoft.MyWallet.Data.Exceptions;
 using CLSoft.MyWallet.Data.Models.Auth;
 using CLSoft.MyWallet.Data.Repositories;
@@ -19,61 +16,38 @@ namespace CLSoft.MyWallet.Application.Auth
     {
         private readonly IAuthRepository _repository;
         private readonly IEncryption _encryption;
-        private readonly IEmailSender _emailSender;
         private readonly IIdentityManager _identityManager;
+        private readonly IPasswordManager _passwordManager;
 
         public AuthControllerService(
-            IAuthRepository repository, IEncryption encryption, IEmailSender emailSender,
-            IIdentityManager identityManager)
+            IAuthRepository repository, IEncryption encryption,
+            IIdentityManager identityManager, IPasswordManager passwordManager)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _encryption = encryption ?? throw new ArgumentNullException(nameof(encryption));
-            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+            _passwordManager = passwordManager ?? throw new ArgumentNullException(nameof(passwordManager));
         }
 
         public async Task ChangePasswordAsync(ChangePasswordViewModel viewModel, string token = null)
         {
-            var request = Mapper.Current.Map<ChangeUserPasswordRequest>(viewModel);
-
-            if (!string.IsNullOrEmpty(token))
+            try
             {
-                var forgotPasswordToken = await _repository
-                    .GetForgotPasswordTokenByTokenAsync(token);
-
-                if (forgotPasswordToken.ExpiresOn < TimeProvider.Current.Now)
-                    throw new ExpiredChangePasswordRequestException();
-
-                request.UserId = forgotPasswordToken.UserId;
+                await _passwordManager.ChangePasswordAsync(
+                    new Business.Password.Models.ChangePasswordRequest(viewModel.Password, token));
             }
-
-            await _repository.ChangeUserPasswordAsync(request);
+            catch (Business.Password.Exceptions.ExpiredTokenException)
+            {
+                throw new ExpiredChangePasswordRequestException();
+            }
         }
 
         public async Task ForgotPasswordAsync(ForgotPasswordViewModel viewModel)
         {
             try
             {
-                var user = await _repository
-                    .GetUserByEmailAddressAsync(viewModel.EmailAddress);
-
-                var token = new Data.Models.Auth.ForgotPasswordToken
-                {
-                    Token = Guid.NewGuid().ToString(),
-                    UserId = user.Id,
-                    RegisteredOn = TimeProvider.Current.Now,
-                    ExpiresOn = TimeProvider.Current.Now.AddHours(1)
-                };
-
-                await _repository.AddForgotPasswordTokenAsync(token);
-
-                await _emailSender.SendEmailAsync(new Business.Email.Models.SendEmailRequest
-                {
-                    To = user.EmailAddress,
-                    Subject = "",
-                    Template = "",
-                    Model = new { }
-                });
+                await _passwordManager.IssueChangePasswordRequestAsync(
+                    new Business.Password.Models.IssueChangePasswordRequest(viewModel.EmailAddress));
             }
             catch (DataNotFoundException)
             {

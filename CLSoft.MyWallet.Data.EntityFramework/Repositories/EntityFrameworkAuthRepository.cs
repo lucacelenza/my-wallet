@@ -45,13 +45,10 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 
         public async Task<ForgotPasswordToken> GetForgotPasswordTokenByTokenAsync(string token)
         {
-            var entity = await DbContext.ForgotPasswordTokens
-                .FirstOrDefaultAsync(u => u.Token.Equals(token));
+            var entity = await QueryForgotPasswordTokensCollectionByToken(token)
+                .FirstOrDefaultAsync();
 
-            if (entity == null)
-                throw new DataNotFoundException();
-
-            return Mapper.Current.Map<ForgotPasswordToken>(entity);
+            return MapEntityToForgotPasswordToken(entity);
         }
 
         public User GetUserByEmailAddress(string emailAddress)
@@ -81,6 +78,31 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
                 throw new DataNotFoundException();
 
             return Mapper.Current.Map<User>(entity);
+        }
+
+        public User GetUserById(long userId)
+        {
+            var entity = DbContext.Users.FirstOrDefault(u => u.Id.Equals(userId));
+            return MapEntityToUser(entity);
+        }
+
+        public ForgotPasswordToken GetForgotPasswordTokenByToken(string token)
+        {
+            var entity = QueryForgotPasswordTokensCollectionByToken(token).FirstOrDefault();
+            return MapEntityToForgotPasswordToken(entity);
+        }
+
+        private IQueryable<Entities.ForgotPasswordToken> QueryForgotPasswordTokensCollectionByToken(string token)
+        {
+            return DbContext.ForgotPasswordTokens.Where(u => u.Token.Equals(token));
+        }
+
+        private ForgotPasswordToken MapEntityToForgotPasswordToken(Entities.ForgotPasswordToken entity)
+        {
+            if (entity == null)
+                throw new DataNotFoundException();
+
+            return Mapper.Current.Map<ForgotPasswordToken>(entity);
         }
     }
 }

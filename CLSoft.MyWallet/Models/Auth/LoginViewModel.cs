@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CLSoft.MyWallet.Models.Auth
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required, MaxLength(100)]
+        [Display(Name = "Email address")]
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
-        [Required]
+        [Required, MaxLength(20)]
+        [Display(Name = "Password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Display(Name = "Remember me")]
         public bool RememeberMe { get; set; }
     }
 }

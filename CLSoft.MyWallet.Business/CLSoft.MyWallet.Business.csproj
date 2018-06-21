@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CLSoft.MyWallet.Data\CLSoft.MyWallet.Data.csproj" />
+    <ProjectReference Include="..\CLSoft.MyWallet.Mappings\CLSoft.MyWallet.Mappings.csproj" />
+  </ItemGroup>
+
 </Project>
