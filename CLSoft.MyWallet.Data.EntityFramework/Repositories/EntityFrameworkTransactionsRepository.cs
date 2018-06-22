@@ -1,9 +1,10 @@
-﻿using CLSoft.MyWallet.Data.EntityFramework.Configuration;
+﻿using AutoMapper;
+using CLSoft.MyWallet.Data.EntityFramework.Configuration;
 using CLSoft.MyWallet.Data.Exceptions;
 using CLSoft.MyWallet.Data.Models.Transactions;
 using CLSoft.MyWallet.Data.Repositories;
-using CLSoft.MyWallet.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,13 +13,16 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 {
     public class EntityFrameworkTransactionsRepository : EntityFrameworkRepository, ITransactionsRepository
     {
-        public EntityFrameworkTransactionsRepository(MyWalletDbContext dbContext) : base(dbContext)
+        private readonly IMapper _mapper;
+
+        public EntityFrameworkTransactionsRepository(MyWalletDbContext dbContext, IMapper mapper) : base(dbContext)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task AddTransactionAsync(AddTransactionRequest request)
         {
-            var entity = Mapper.Current.Map<Entities.Transaction>(request);
+            var entity = _mapper.Map<Entities.Transaction>(request);
             DbContext.Transactions.Add(entity);
             await DbContext.SaveChangesAsync();
         }
@@ -45,7 +49,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
         public async Task<Transaction> GetTransactionByIdAsync(long transactionId)
         {
             var entity = await GetTransactionEntityByIdAsync(transactionId);
-            return Mapper.Current.Map<Transaction>(entity);
+            return _mapper.Map<Transaction>(entity);
         }
 
         public async Task<IEnumerable<Transaction>> GetTransactionsAsync(GetTransactionsRequest request)
@@ -60,7 +64,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
                 .Take(request.RecordsPerPage);
 
             var entities = await query.ToArrayAsync();
-            return entities.Select(e => Mapper.Current.Map<Transaction>(e));
+            return entities.Select(e => _mapper.Map<Transaction>(e));
         }
 
         private async Task<Entities.Transaction> GetTransactionEntityByIdAsync(long transactionId)

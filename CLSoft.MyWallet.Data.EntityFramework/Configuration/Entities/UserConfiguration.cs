@@ -24,6 +24,16 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Configuration.Entities
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(e => e.FirstName)
+                .HasColumnName("firstname")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(e => e.LastName)
+                .HasColumnName("lastname")
+                .HasMaxLength(100)
+                .IsRequired();
+
             builder.Property(e => e.RegisteredOn)
                 .HasColumnName("registeredon")
                 .IsRequired();

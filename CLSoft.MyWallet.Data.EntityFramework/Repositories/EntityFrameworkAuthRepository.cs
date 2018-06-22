@@ -1,9 +1,10 @@
-﻿using CLSoft.MyWallet.Data.EntityFramework.Configuration;
+﻿using AutoMapper;
+using CLSoft.MyWallet.Data.EntityFramework.Configuration;
 using CLSoft.MyWallet.Data.Exceptions;
 using CLSoft.MyWallet.Data.Models.Auth;
 using CLSoft.MyWallet.Data.Repositories;
-using CLSoft.MyWallet.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,20 +12,23 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 {
     public class EntityFrameworkAuthRepository : EntityFrameworkRepository, IAuthRepository
     {
-        public EntityFrameworkAuthRepository(MyWalletDbContext dbContext) : base(dbContext)
+        private readonly IMapper _mapper;
+
+        public EntityFrameworkAuthRepository(MyWalletDbContext dbContext, IMapper mapper) : base(dbContext)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task AddForgotPasswordTokenAsync(ForgotPasswordToken token)
         {
-            var entity = Mapper.Current.Map<Entities.ForgotPasswordToken>(token);
+            var entity = _mapper.Map<Entities.ForgotPasswordToken>(token);
             DbContext.ForgotPasswordTokens.Add(entity);
             await DbContext.SaveChangesAsync();
         }
 
         public async Task AddUserAsync(AddUserRequest request)
         {
-            var entity = Mapper.Current.Map<Entities.User>(request);
+            var entity = _mapper.Map<Entities.User>(request);
             DbContext.Users.Add(entity);
             await DbContext.SaveChangesAsync();
         }
@@ -77,7 +81,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             if (entity == null)
                 throw new DataNotFoundException();
 
-            return Mapper.Current.Map<User>(entity);
+            return _mapper.Map<User>(entity);
         }
 
         public User GetUserById(long userId)
@@ -102,7 +106,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             if (entity == null)
                 throw new DataNotFoundException();
 
-            return Mapper.Current.Map<ForgotPasswordToken>(entity);
+            return _mapper.Map<ForgotPasswordToken>(entity);
         }
     }
 }

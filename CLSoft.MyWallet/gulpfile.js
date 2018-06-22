@@ -1,8 +1,10 @@
-﻿const gulp = require("gulp");
+﻿/// <binding BeforeBuild='default' Clean='default' />
+const gulp = require("gulp");
 const concat = require("gulp-concat");
 
 const vendorStyles = [
-    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+    "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "Styles/custom-styles.css"
 ];
 const vendorScripts = [
     "node_modules/jquery/dist/jquery.min.js",
@@ -20,7 +22,7 @@ gulp.task("default", ["build-vendor", "build-validation"]);
 
 gulp.task("build-vendor", ["build-vendor-css", "build-vendor-js"]);
 
-gulp.task("build-validation", ["build-validation-js"])
+gulp.task("build-validation", ["build-validation-js"]);
 
 gulp.task("build-vendor-css", () => {
     return gulp.src(vendorStyles)

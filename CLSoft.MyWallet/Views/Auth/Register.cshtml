@@ -1,7 +1,36 @@
-﻿
+﻿@using CLSoft.MyWallet.Models.Auth
+@model RegisterUserViewModel
+
 @{
     ViewData["Title"] = "Register";
 }
 
-<h2>Register</h2>
+<form asp-controller="Auth" asp-action="Register" method="post" class="small-form">
+    <h2>Register</h2>
 
+    <div class="form-group">
+        <label asp-for="EmailAddress"></label>
+        <input asp-for="EmailAddress" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Register</button>
+</form>
+
+@section scripts {
+    <script src="~/js/validation.min.js"></script>
+}

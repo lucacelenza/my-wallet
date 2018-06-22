@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Data.Models.Transactions;
 using CLSoft.MyWallet.Data.Repositories;
@@ -16,19 +17,22 @@ namespace CLSoft.MyWallet.Application.Transactions
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly IWalletsRepository _walletsRepository;
         private readonly IAsyncUserIdProvider _userIdProvider;
+        private readonly IMapper _mapper;
 
         public TransactionControllerService(
             ITransactionsRepository transactionsRepository, 
-            IWalletsRepository walletsRepository, IAsyncUserIdProvider userIdProvider)
+            IWalletsRepository walletsRepository, IAsyncUserIdProvider userIdProvider,
+            IMapper mapper)
         {
             _transactionsRepository = transactionsRepository ?? throw new ArgumentNullException(nameof(transactionsRepository));
             _walletsRepository = walletsRepository ?? throw new ArgumentNullException(nameof(walletsRepository));
             _userIdProvider = userIdProvider ?? throw new ArgumentNullException(nameof(userIdProvider));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task AddTransactionAsync(TransactionViewModel viewModel)
         {
-            var repositoryModel = Mapper.Current.Map<AddTransactionRequest>(viewModel);
+            var repositoryModel = _mapper.Map<AddTransactionRequest>(viewModel);
             await _transactionsRepository.AddTransactionAsync(repositoryModel);
         }
 
@@ -39,7 +43,7 @@ namespace CLSoft.MyWallet.Application.Transactions
 
         public async Task EditTransactionAsync(long transactionId, TransactionViewModel viewModel)
         {
-            var request = Mapper.Current.Map<EditTransactionRequest>(viewModel);
+            var request = _mapper.Map<EditTransactionRequest>(viewModel);
             request.TransactionId = transactionId;
             await _transactionsRepository.EditTransactionAsync(request);
         }
@@ -56,7 +60,7 @@ namespace CLSoft.MyWallet.Application.Transactions
                 var transaction = await _transactionsRepository
                     .GetTransactionByIdAsync(transactionId.Value);
 
-                viewModel = Mapper.Current.Map<TransactionViewModel>(transaction);
+                viewModel = _mapper.Map<TransactionViewModel>(transaction);
                 viewModel.Wallets = new SelectList(wallets, "Id", "Name", viewModel.SelectedWalletId);
             }
             else
@@ -72,9 +76,9 @@ namespace CLSoft.MyWallet.Application.Transactions
                 request = new Models.Transactions.GetTransactionsRequest();
 
             var transactions = await _transactionsRepository.GetTransactionsAsync(
-                Mapper.Current.Map<Data.Models.Transactions.GetTransactionsRequest>(request));
+                _mapper.Map<Data.Models.Transactions.GetTransactionsRequest>(request));
 
-            return Mapper.Current.Map<TransactionsViewModel>(transactions);
+            return _mapper.Map<TransactionsViewModel>(transactions);
         }
     }
 }

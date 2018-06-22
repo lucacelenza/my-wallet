@@ -11,8 +11,8 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.1" />
     <PackageReference Include="BCrypt-Core" Version="2.0.0" />
     <PackageReference Include="FluentEmail.Razor" Version="2.4.0" />
     <PackageReference Include="FluentEmail.SendGrid" Version="2.4.0" />
@@ -29,6 +29,5 @@
     <ProjectReference Include="..\CLSoft.MyWallet.Business\CLSoft.MyWallet.Business.csproj" />
     <ProjectReference Include="..\CLSoft.MyWallet.Data.EntityFramework\CLSoft.MyWallet.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\CLSoft.MyWallet.Data\CLSoft.MyWallet.Data.csproj" />
-    <ProjectReference Include="..\CLSoft.MyWallet.Mappings\CLSoft.MyWallet.Mappings.csproj" />
   </ItemGroup>
 </Project>

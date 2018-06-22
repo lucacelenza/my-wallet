@@ -1,9 +1,10 @@
-﻿using CLSoft.MyWallet.Data.EntityFramework.Configuration;
+﻿using AutoMapper;
+using CLSoft.MyWallet.Data.EntityFramework.Configuration;
 using CLSoft.MyWallet.Data.Exceptions;
 using CLSoft.MyWallet.Data.Models.Wallets;
 using CLSoft.MyWallet.Data.Repositories;
-using CLSoft.MyWallet.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,13 +12,16 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 {
     public class EntityFrameworkWalletsRepository : EntityFrameworkRepository, IWalletsRepository
     {
-        public EntityFrameworkWalletsRepository(MyWalletDbContext dbContext) : base(dbContext)
+        private readonly IMapper _mapper;
+
+        public EntityFrameworkWalletsRepository(MyWalletDbContext dbContext, IMapper mapper) : base(dbContext)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task AddWalletAsync(AddWalletRequest request)
         {
-            var entity = Mapper.Current.Map<Entities.Wallet>(request);
+            var entity = _mapper.Map<Entities.Wallet>(request);
             DbContext.Wallets.Add(entity);
             await DbContext.SaveChangesAsync();
         }
@@ -45,13 +49,13 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             var entities = await DbContext.Wallets
                 .Where(w => w.UserId.Equals(userId)).ToArrayAsync();
 
-            return Mapper.Current.Map<Wallets>(entities);
+            return _mapper.Map<Wallets>(entities);
         }
 
         public async Task<Wallet> GetWalletByIdAsync(long walletId)
         {
             var entity = await GetWalletEntityByIdAsync(walletId);
-            return Mapper.Current.Map<Wallet>(entity);
+            return _mapper.Map<Wallet>(entity);
         }
 
         private async Task<Entities.Wallet> GetWalletEntityByIdAsync(long walletId)

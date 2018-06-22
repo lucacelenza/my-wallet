@@ -1,12 +1,10 @@
-﻿using CLSoft.MyWallet.Business.User;
+﻿using AutoMapper;
+using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Data.Models.Wallets;
 using CLSoft.MyWallet.Data.Repositories;
 using CLSoft.MyWallet.Exceptions;
-using CLSoft.MyWallet.Mappings;
 using CLSoft.MyWallet.Models.Wallets;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Application.Wallets
@@ -15,11 +13,13 @@ namespace CLSoft.MyWallet.Application.Wallets
     {
         private readonly IWalletsRepository _repository;
         private readonly IAsyncUserIdProvider _userIdProvider;
+        private readonly IMapper _mapper;
 
-        public WalletsControllerService(IWalletsRepository repository, IAsyncUserIdProvider userIdProvider)
+        public WalletsControllerService(IWalletsRepository repository, IAsyncUserIdProvider userIdProvider, IMapper mapper)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _userIdProvider = userIdProvider ?? throw new ArgumentNullException(nameof(userIdProvider));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<WalletViewModel> GetWalletAsync(long walletId)
@@ -30,18 +30,18 @@ namespace CLSoft.MyWallet.Application.Wallets
             if (repositoryModel.UserId != userId)
                 throw new NotAuthorizedException();
 
-            return Mapper.Current.Map<WalletViewModel>(repositoryModel);
+            return _mapper.Map<WalletViewModel>(repositoryModel);
         }
 
         public async Task AddWalletAsync(WalletViewModel viewModel)
         {
-            var request = Mapper.Current.Map<AddWalletRequest>(viewModel);
+            var request = _mapper.Map<AddWalletRequest>(viewModel);
             await _repository.AddWalletAsync(request);
         }
 
         public async Task EditWalletAsync(long walletId, WalletViewModel viewModel)
         {
-            var request = Mapper.Current.Map<EditWalletRequest>(viewModel);
+            var request = _mapper.Map<EditWalletRequest>(viewModel);
             request.WalletId = walletId;
             await _repository.EditWalletAsync(request);
         }
@@ -56,7 +56,7 @@ namespace CLSoft.MyWallet.Application.Wallets
             var userId = await _userIdProvider.GetUserIdAsync();
             var wallets = await _repository.GetAllWalletsByUserIdAsync(userId);
 
-            return Mapper.Current.Map<WalletsViewModel>(wallets);
+            return _mapper.Map<WalletsViewModel>(wallets);
         }
     }
 }
