@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "TokenExpired";
+    ViewData["Title"] = "Token expired";
+    Layout = "_NotLoggedInLayout";
 }
 
 <h2>TokenExpired</h2>
 
+<p>Token expired, fella! <a asp-controller="Auth" asp-action="ForgotPassword" class="btn btn-link">Try again.</a></p>

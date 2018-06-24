@@ -1,7 +1,10 @@
 ﻿
 @{
     ViewData["Title"] = "Registered";
+    Layout = "_NotLoggedInLayout";
 }
+
 
 <h2>Registered</h2>
 
+<p>Hey, you're registered! Now let's get you <a asp-controller="Auth" asp-action="Login" class="btn btn-link">logged in.</a></p>

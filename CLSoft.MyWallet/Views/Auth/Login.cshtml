@@ -3,9 +3,10 @@
 
 @{
     ViewData["Title"] = "Login";
+    Layout = "_NotLoggedInLayout";
 }
 
-<form asp-action="Login" asp-controller="Auth" method="post" class="small-form">
+<form asp-action="Login" asp-controller="Auth" asp-route-returnurl="@Context.Request.Query["returnUrl"]" method="post">
     <h2>Login</h2>
 
     <div class="form-group">

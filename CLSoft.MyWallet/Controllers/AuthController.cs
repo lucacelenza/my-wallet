@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Auth;
 using CLSoft.MyWallet.Application.Auth.Exceptions;
@@ -103,19 +101,23 @@ namespace CLSoft.MyWallet.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(string returnUrl, LoginViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 await _service.LoginAsync(viewModel);
-                return RedirectToAction("Index", "Home");
+
+                if (Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                else
+                    return RedirectToAction("Index", "Home");
             }
 
             return View(viewModel);

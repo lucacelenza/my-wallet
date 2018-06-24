@@ -13,9 +13,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddDataServices(this IServiceCollection services)
         {
-            
-
-            services.AddDbContext<MyWalletDbContext>(o => o.UseSqlite("DataSource=:memory:"));
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<MyWalletDbContext>(o => o.UseSqlServer());
 
             services.AddRepositories();
 

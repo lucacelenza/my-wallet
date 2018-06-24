@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CLSoft.MyWallet.Models.Auth
 {
     public class ForgotPasswordViewModel
     {
-        [Required]
+        [Required, MaxLength(100)]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string EmailAddress { get; set; }
     }
 }

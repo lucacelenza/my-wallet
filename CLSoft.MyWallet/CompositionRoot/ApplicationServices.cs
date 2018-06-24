@@ -2,7 +2,10 @@
 using CLSoft.MyWallet.Application.Auth;
 using CLSoft.MyWallet.Application.Transactions;
 using CLSoft.MyWallet.Application.Wallets;
+using CLSoft.MyWallet.Components.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -28,8 +31,16 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IServiceCollection AddCustomAuthentication(this IServiceCollection services)
         {
             services
-                .AddAuthentication("MyWalletCookieScheme")
-                .AddCookie();
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Auth/Login";
+                    options.ReturnUrlParameter = "returnUrl";
+                    options.ExpireTimeSpan = new TimeSpan(30, 0, 0, 0);
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                });
+
+            services.AddScoped<CustomCookieAuthenticationEvents>();
 
             return services;
         }

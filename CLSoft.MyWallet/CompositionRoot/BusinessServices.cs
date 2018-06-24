@@ -3,10 +3,12 @@ using CLSoft.MyWallet.Business.Encryption;
 using CLSoft.MyWallet.Business.Identity;
 using CLSoft.MyWallet.Business.Password;
 using CLSoft.MyWallet.Business.Serialization;
+using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Components.Email;
 using CLSoft.MyWallet.Components.Encryption;
 using CLSoft.MyWallet.Components.Identity;
 using CLSoft.MyWallet.Components.Serialization;
+using CLSoft.MyWallet.Components.User;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -19,6 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddIdentityManager();
             services.AddEmailSender();
             services.AddPasswordManager();
+            services.AddAuthenticationProviders();
 
             return services;
         }
@@ -37,13 +40,20 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection AddIdentityManager(this IServiceCollection services)
         {
-            services.AddSingleton<IIdentityManager, HttpContextIdentityManager>();
+            services.AddScoped<IIdentityManager, HttpContextIdentityManager>();
             return services;
         }
 
         private static IServiceCollection AddPasswordManager(this IServiceCollection services)
         {
             services.AddScoped<IPasswordManager, PasswordManager>();
+            return services;
+        }
+
+        private static IServiceCollection AddAuthenticationProviders(this IServiceCollection services)
+        {
+            services.AddScoped<IUserIdProvider, RepositoryUserIdProvider>();
+            services.AddScoped<IUserEmailAddressProvider, HttpContextUserEmailAddressProvider>();
             return services;
         }
 

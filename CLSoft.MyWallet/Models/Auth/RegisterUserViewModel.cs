@@ -5,7 +5,7 @@ namespace CLSoft.MyWallet.Models.Auth
     public class RegisterUserViewModel
     {
         [Required, MaxLength(100)]
-        [Display(Name = "Email address")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string EmailAddress { get; set; }
 
@@ -13,6 +13,11 @@ namespace CLSoft.MyWallet.Models.Auth
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required, MaxLength(20), Compare("Password")]
+        [Display(Name = "Repeat password")]
+        [DataType(DataType.Password)]
+        public string RepeatPassword { get; set; }
 
         [Required, MaxLength(100)]
         [Display(Name = "First name")]

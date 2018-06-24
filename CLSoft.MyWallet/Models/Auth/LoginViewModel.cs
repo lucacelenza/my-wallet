@@ -5,7 +5,7 @@ namespace CLSoft.MyWallet.Models.Auth
     public class LoginViewModel
     {
         [Required, MaxLength(100)]
-        [Display(Name = "Email address")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string EmailAddress { get; set; }
 

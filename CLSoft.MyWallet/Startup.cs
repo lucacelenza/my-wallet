@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 namespace CLSoft.MyWallet
 {
@@ -47,6 +48,18 @@ namespace CLSoft.MyWallet
             }
 
             app.UseAuthentication();
+
+            app.UseStatusCodePages(context => {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+                {
+                    response.Redirect("/Auth/Login");
+                }
+
+                return System.Threading.Tasks.Task.FromResult(0);
+            });
 
             app.UseMvc(routes =>
             {
