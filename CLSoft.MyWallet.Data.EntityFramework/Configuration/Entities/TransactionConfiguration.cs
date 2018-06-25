@@ -8,6 +8,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Configuration.Entities
     {
         public void Configure(EntityTypeBuilder<Transaction> builder)
         {
+            builder.ToTable("transactions");
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
@@ -32,6 +33,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Configuration.Entities
 
             builder.Property(e => e.Amount)
                 .HasColumnName("amount")
+                .HasColumnType("decimal(10,2)")
                 .IsRequired();
         }
     }

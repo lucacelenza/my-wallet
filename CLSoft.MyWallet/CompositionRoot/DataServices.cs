@@ -13,12 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddDataServices(this IServiceCollection services)
         {
-            services
-                .AddEntityFrameworkSqlServer()
-                .AddDbContext<MyWalletDbContext>(o => o.UseSqlServer());
-
             services.AddRepositories();
-
             return services;
         }
 

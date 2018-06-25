@@ -1,6 +1,7 @@
 ﻿using CLSoft.MyWallet.Data.EntityFramework.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
@@ -19,6 +20,15 @@ namespace CLSoft.MyWallet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<MyWalletDbContext>(o => 
+                {
+                    o.UseSqlServer(
+                        Configuration.GetConnectionString("defaultConnectionString"), 
+                        b => b.MigrationsAssembly("CLSoft.MyWallet"));
+                });
+
             services.AddDataServices();
             services.AddBusinessServices();
             services.AddApplicationServices();
@@ -40,12 +50,6 @@ namespace CLSoft.MyWallet
             }
 
             app.UseStaticFiles();
-
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<MyWalletDbContext>();
-                context.Database.EnsureCreated();
-            }
 
             app.UseAuthentication();
 

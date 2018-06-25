@@ -8,6 +8,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Configuration.Entities
     {
         public void Configure(EntityTypeBuilder<ForgotPasswordToken> builder)
         {
+            builder.ToTable("forgotpasswordtokens");
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)

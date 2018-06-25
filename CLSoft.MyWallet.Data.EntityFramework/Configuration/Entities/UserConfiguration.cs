@@ -8,6 +8,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Configuration.Entities
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("users");
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
