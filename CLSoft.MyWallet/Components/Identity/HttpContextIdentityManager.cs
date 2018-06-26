@@ -2,6 +2,7 @@
 using CLSoft.MyWallet.Business.Identity;
 using CLSoft.MyWallet.Business.Identity.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
@@ -25,7 +26,8 @@ namespace CLSoft.MyWallet.Components.Identity
         {
             var principal = _mapper.Map<ClaimsPrincipal>(request);
             var properties = _mapper.Map<AuthenticationProperties>(request);
-            await _httpContextAccessor.HttpContext.SignInAsync(principal, properties);
+            await _httpContextAccessor.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
         }
 
         public async Task SignOutAsync()
