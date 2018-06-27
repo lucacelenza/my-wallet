@@ -40,6 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection AddIdentityManager(this IServiceCollection services)
         {
+            services.AddScoped<IIdentityValidator, IdentityValidator>();
             services.AddScoped<IIdentityManager, HttpContextIdentityManager>();
             return services;
         }

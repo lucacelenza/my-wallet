@@ -2,17 +2,23 @@
 using CLSoft.MyWallet.Data.EntityFramework.Repositories;
 using CLSoft.MyWallet.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class DataServices
     {
-        public static IServiceCollection AddDataServices(this IServiceCollection services)
+        public static IServiceCollection AddDataServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<MyWalletDbContext>(o =>
+                {
+                    o.UseSqlServer(
+                        configuration.GetConnectionString("defaultConnectionString"),
+                        b => b.MigrationsAssembly("CLSoft.MyWallet"));
+                });
+
             services.AddRepositories();
             return services;
         }

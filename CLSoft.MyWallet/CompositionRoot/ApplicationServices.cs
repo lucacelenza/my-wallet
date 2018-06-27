@@ -5,6 +5,7 @@ using CLSoft.MyWallet.Application.Wallets;
 using CLSoft.MyWallet.Components.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -32,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
                     options.LoginPath = "/Auth/Login";
                     options.ReturnUrlParameter = "returnUrl";

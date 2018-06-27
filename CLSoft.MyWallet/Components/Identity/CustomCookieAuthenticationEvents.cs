@@ -1,4 +1,5 @@
-﻿using CLSoft.MyWallet.Business.User;
+﻿using CLSoft.MyWallet.Business.Identity;
+using CLSoft.MyWallet.Business.Identity.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
@@ -8,20 +9,20 @@ namespace CLSoft.MyWallet.Components.Identity
 {
     public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
     {
-        private readonly IUserIdProvider _userIdProvider;
+        private readonly IIdentityValidator _identityValidator;
 
-        public CustomCookieAuthenticationEvents(IUserIdProvider userIdProvider)
+        public CustomCookieAuthenticationEvents(IIdentityValidator identityValidator)
         {
-            _userIdProvider = userIdProvider ?? throw new ArgumentNullException(nameof(userIdProvider));
+            _identityValidator = identityValidator ?? throw new ArgumentNullException(nameof(identityValidator));
         }
 
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
         {
             try
             {
-                _userIdProvider.GetUserId();
+                await _identityValidator.ValidatePrincipalAsync(context.Principal);
             }
-            catch
+            catch (InvalidIdentityException)
             {
                 context.RejectPrincipal();
 
