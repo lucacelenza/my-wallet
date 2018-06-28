@@ -3,7 +3,7 @@ using CLSoft.MyWallet.Business.Email.Models;
 using FluentEmail.Razor;
 using FluentEmail.SendGrid;
 using System;
-using System.Reflection;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Components.Email
@@ -11,10 +11,12 @@ namespace CLSoft.MyWallet.Components.Email
     public class SendGridFluentEmailSender : IEmailSender
     {
         private readonly ISendGridApiKeyProvider _apiKeyProvider;
+        private readonly IEmailTemplatesPathProvider _templatesPathProvider;
 
-        public SendGridFluentEmailSender(ISendGridApiKeyProvider apiKeyProvider)
+        public SendGridFluentEmailSender(ISendGridApiKeyProvider apiKeyProvider, IEmailTemplatesPathProvider templatesPathProvider)
         {
             _apiKeyProvider = apiKeyProvider ?? throw new ArgumentNullException(nameof(apiKeyProvider));
+            _templatesPathProvider = templatesPathProvider ?? throw new ArgumentNullException(nameof(templatesPathProvider));
         }
 
         public async Task SendEmailAsync(SendEmailRequest request)
@@ -30,7 +32,9 @@ namespace CLSoft.MyWallet.Components.Email
                 .From("assistance@mywallet.com")
                 .To(request.To)
                 .Subject(request.Subject)
-                .UsingTemplateFromEmbedded($"CLSoft.MyWallet.{request.Template}.cshtml", request.Model, GetType().GetTypeInfo().Assembly);
+                .UsingTemplateFromFile(
+                    Path.Combine(_templatesPathProvider.GetEmailTemplatesPath(), $"{request.Template}.cshtml"), 
+                    request.Model);
 
             await email.SendAsync();
         }

@@ -60,6 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection AddEmailSender(this IServiceCollection services)
         {
+            services.AddSingleton<IEmailTemplatesPathProvider, ConfigurationEmailTemplatesPathProvider>();
             services.AddSingleton<ISendGridApiKeyProvider, AppSecretsSendGridApiKeyProvider>();
             services.AddSingleton<IEmailSender, SendGridFluentEmailSender>();
             return services;

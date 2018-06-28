@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Business.Email.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CLSoft.MyWallet.Business.Mappings;
+using CLSoft.MyWallet.Mappings.Auth;
 
-namespace CLSoft.MyWallet.Business.Mappings
+namespace CLSoft.MyWallet.Mappings
 {
     public class EmailSenderProfile : Profile
     {
@@ -14,7 +13,7 @@ namespace CLSoft.MyWallet.Business.Mappings
                 .ForMember(d => d.To, o => o.ResolveUsing<UserIdEmailResolver, long>(s => s.UserId))
                 .ForMember(d => d.Subject, o => o.UseValue("Reset password"))
                 .ForMember(d => d.Template, o => o.UseValue("ResetPassword"))
-                .ForMember(d => d.Model, o => o.MapFrom(s => new { Token = s.Token }));
+                .ForMember(d => d.Model, o => o.ResolveUsing<ResetPasswordModelResolver, string>(s => s.Token));
         }
     }
 }
