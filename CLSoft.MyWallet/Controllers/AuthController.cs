@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Auth;
 using CLSoft.MyWallet.Application.Auth.Exceptions;
+using CLSoft.MyWallet.Extensions.Attributes;
 using CLSoft.MyWallet.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace CLSoft.MyWallet.Controllers
             return View();
         }
 
-        public IActionResult ChangePassword(string token)
+        public IActionResult ChangePassword([RequiredFromQuery]string token)
         {
             return View("ChangePasswordUsingToken");
         }

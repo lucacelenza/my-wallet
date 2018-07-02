@@ -29,6 +29,6 @@ namespace CLSoft.MyWallet.Components.Identity
                 await context.HttpContext.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
             }
-        }
+        }        
     }
 }

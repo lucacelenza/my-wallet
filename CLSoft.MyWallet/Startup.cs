@@ -39,7 +39,7 @@ namespace CLSoft.MyWallet
             }
 
             app.UseStaticFiles();
-
+            
             app.UseAuthentication();
 
             app.UseStatusCodePages(context => {

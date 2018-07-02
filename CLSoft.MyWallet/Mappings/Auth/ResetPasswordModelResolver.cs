@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Dynamic;
 
 namespace CLSoft.MyWallet.Mappings.Auth
 {
@@ -15,7 +16,10 @@ namespace CLSoft.MyWallet.Mappings.Auth
 
         public object Resolve(object source, object destination, string sourceMember, object destMember, ResolutionContext context)
         {
-            return new { Url = _urlHelper.Action("ChangePassword", "Auth", new { token = sourceMember }) };
+            dynamic model = new ExpandoObject();
+            model.Url = _urlHelper.Action("ChangePassword", "Auth", new { token = sourceMember });
+
+            return model;
         }
     }
 }
