@@ -12,14 +12,7 @@ namespace CLSoft.MyWallet.Business.Mappings
         public PasswordManagerProfile()
         {
             CreateMap<ChangePasswordRequest, Data.Models.Auth.ChangeUserPasswordRequest>()
-                .ForMember(d => d.UserId, o => {
-                    o.Condition(s => !string.IsNullOrEmpty(s.Token));
-                    o.ResolveUsing<TokenUserIdResolver, string>(s => s.Token);
-                })
-                .ForMember(d => d.UserId, o => {
-                    o.Condition(s => string.IsNullOrEmpty(s.Token));
-                    o.ResolveUsing<UserIdResolver>();
-                })
+                .ForMember(d => d.UserId, o => o.ResolveUsing<ConditionalUserIdResolver>())
                 .ForMember(d => d.NewHashedPassword, o => o.ResolveUsing<HashedStringResolver, string>(s => s.NewPassword))
                 .ForMember(d => d.ChangedOn, o => o.UseValue(TimeProvider.Current.Now));
 

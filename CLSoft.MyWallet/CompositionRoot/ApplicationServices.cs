@@ -2,14 +2,12 @@
 using CLSoft.MyWallet.Application.Auth;
 using CLSoft.MyWallet.Application.Transactions;
 using CLSoft.MyWallet.Application.Wallets;
+using CLSoft.MyWallet.Business.Url;
 using CLSoft.MyWallet.Components.Identity;
-using Microsoft.AspNetCore.Authentication;
+using CLSoft.MyWallet.Components.Url;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -33,13 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.AddScoped<IUrlHelper>(factory =>
-            {
-                var actionContext = factory
-                    .GetService<IActionContextAccessor>().ActionContext;
-
-                return new UrlHelper(actionContext);
-            });
+            services.AddScoped<IUrlResolver, UrlResolver>();
 
             return services;
         }
@@ -48,32 +40,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                .AddCookie(options =>
                 {
                     options.LoginPath = "/Auth/Login";
                     options.ReturnUrlParameter = "returnUrl";
                     options.ExpireTimeSpan = new TimeSpan(30, 0, 0, 0);
-                    options.Events = new CookieAuthenticationEvents
-                    {
-                        OnValidatePrincipal = async (context) =>
-                        {
-                            var identityValidator = context.HttpContext.RequestServices
-                                .GetRequiredService<CLSoft.MyWallet.Business.Identity.IIdentityValidator>();
-
-                            try
-                            {
-                                await identityValidator.ValidatePrincipalAsync(context.Principal);
-                            }
-                            catch (CLSoft.MyWallet.Business.Identity.Exceptions.InvalidIdentityException)
-                            {
-                                context.RejectPrincipal();
-
-                                await context.HttpContext.SignOutAsync(
-                                    CookieAuthenticationDefaults.AuthenticationScheme);
-                            }
-                        }
-                    };
-                    //options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 });
 
             services.AddScoped<CustomCookieAuthenticationEvents>();

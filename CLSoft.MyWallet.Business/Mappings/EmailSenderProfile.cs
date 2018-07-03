@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Business.Email.Models;
-using CLSoft.MyWallet.Business.Mappings;
-using CLSoft.MyWallet.Mappings.Auth;
 
-namespace CLSoft.MyWallet.Mappings
+namespace CLSoft.MyWallet.Business.Mappings
 {
     public class EmailSenderProfile : Profile
     {

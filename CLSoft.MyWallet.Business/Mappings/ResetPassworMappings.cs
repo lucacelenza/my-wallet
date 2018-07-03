@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+using CLSoft.MyWallet.Business.Url;
 using System;
 using System.Dynamic;
 
-namespace CLSoft.MyWallet.Mappings.Auth
+namespace CLSoft.MyWallet.Business.Mappings
 {
     public class ResetPasswordModelResolver : IMemberValueResolver<object, object, string, object>
     {
-        private readonly IUrlHelper _urlHelper;
+        private readonly IUrlResolver _urlResolver;
 
-        public ResetPasswordModelResolver(IUrlHelper urlHelper)
+        public ResetPasswordModelResolver(IUrlResolver urlResolver)
         {
-            _urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
+            _urlResolver = urlResolver ?? throw new ArgumentNullException(nameof(urlResolver));
         }
 
         public object Resolve(object source, object destination, string sourceMember, object destMember, ResolutionContext context)
         {
             dynamic model = new ExpandoObject();
-            model.Url = _urlHelper.Action("ChangePassword", "Auth", new { token = sourceMember });
+            model.Url = _urlResolver.ResolveUrl("ChangePassword", "Auth", new { token = sourceMember });
 
             return model;
         }

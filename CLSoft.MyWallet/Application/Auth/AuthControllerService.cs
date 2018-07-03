@@ -39,9 +39,12 @@ namespace CLSoft.MyWallet.Application.Auth
                 await _passwordManager.ChangePasswordAsync(
                     new Business.Password.Models.ChangePasswordRequest(viewModel.Password, token));
             }
-            catch (Business.Password.Exceptions.ExpiredTokenException)
+            catch (AutoMapperMappingException e)
             {
-                throw new ExpiredChangePasswordRequestException();
+                if (e.InnerException is Business.Password.Exceptions.ExpiredTokenException)
+                    throw new ExpiredChangePasswordRequestException();
+                else
+                    throw e;
             }
         }
 

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CLSoft.MyWallet.Controllers
 {
-    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly IAuthControllerService _service;
@@ -25,13 +24,14 @@ namespace CLSoft.MyWallet.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult ChangePassword([RequiredFromQuery]string token)
         {
             return View("ChangePasswordUsingToken");
         }
 
-        [Authorize]
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
@@ -44,14 +44,16 @@ namespace CLSoft.MyWallet.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult PasswordChanged()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(string token, ChangePasswordViewModel viewModel)
+        public async Task<IActionResult> ChangePassword([RequiredFromQuery]string token, ChangePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -69,22 +71,26 @@ namespace CLSoft.MyWallet.Controllers
             return View("ChangePasswordUsingToken", viewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult TokenExpired()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult PasswordReset()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel viewModel)
         {
@@ -97,17 +103,20 @@ namespace CLSoft.MyWallet.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult Registered()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string returnUrl, LoginViewModel viewModel)
         {
@@ -124,12 +133,14 @@ namespace CLSoft.MyWallet.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
         {
@@ -142,11 +153,13 @@ namespace CLSoft.MyWallet.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult ForgotPasswordRequestSent()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await _service.LogoutAsync();
