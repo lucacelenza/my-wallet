@@ -28,8 +28,12 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 
         public async Task AddUserAsync(AddUserRequest request)
         {
-            var entity = _mapper.Map<Entities.User>(request);
-            DbContext.Users.Add(entity);
+            var userEntity = _mapper.Map<Entities.User>(request);
+            DbContext.Users.Add(userEntity);
+
+            var walletEntity = _mapper.Map<Entities.Wallet>(request);
+            DbContext.Wallets.Add(walletEntity);
+
             await DbContext.SaveChangesAsync();
         }
 

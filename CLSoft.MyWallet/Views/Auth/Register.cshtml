@@ -34,6 +34,26 @@
         <input asp-for="LastName" class="form-control" autocomplete="on" />
     </div>
 
+    <fieldset>
+        <legend>Wallet</legend>
+        <p>Let's start by registering a wallet, it's free!</p>
+
+        <div class="form-group">
+            <label asp-for="StartWallet.Name"></label>
+            <input asp-for="StartWallet.Name" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StartWallet.Description"></label>
+            <input asp-for="StartWallet.Description" class="form-control" autocomplete="on" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StartWallet.Amount"></label>
+            <input asp-for="StartWallet.Amount" asp-format="{0:#,###.00}" class="form-control" autocomplete="on" />
+        </div>
+    </fieldset>
+
     <button type="submit" class="btn btn-primary btn-block">Register</button>
 </form>
 

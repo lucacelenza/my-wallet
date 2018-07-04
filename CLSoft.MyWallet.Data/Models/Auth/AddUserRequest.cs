@@ -9,5 +9,13 @@ namespace CLSoft.MyWallet.Data.Models.Auth
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime RegisteredOn { get; set; }
+        public Wallet StartWallet { get; set; }
+
+        public class Wallet
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public DateTime RegisteredOn { get; set; }
+        }
     }
 }

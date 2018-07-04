@@ -90,7 +90,7 @@ namespace CLSoft.MyWallet.Application.Auth
         public async Task RegisterUserAsync(RegisterUserViewModel viewModel)
         {
             var request = _mapper.Map<AddUserRequest>(viewModel);
-            await _repository.AddUserAsync(request);
+            await _repository.AddUserAsync(request);            
         }
     }
 }
