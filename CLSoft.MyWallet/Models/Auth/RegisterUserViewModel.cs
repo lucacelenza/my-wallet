@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace CLSoft.MyWallet.Models.Auth
 {
@@ -29,6 +30,16 @@ namespace CLSoft.MyWallet.Models.Auth
 
         public StartWalletViewModel StartWallet { get; set; }
 
+        public RegisterUserViewModel()
+        {
+            StartWallet = new StartWalletViewModel
+            {
+                Name = "Cash",
+                Description = "This is how much cash I got",
+                Amount = new CurrencyViewModel()
+            };
+        }
+
         public class StartWalletViewModel
         {
             [Required, MaxLength(50)]
@@ -39,10 +50,7 @@ namespace CLSoft.MyWallet.Models.Auth
             [Display(Name = "Description")]
             public string Description { get; set; }
 
-            [Required]
-            [Display(Name = "Amount")]
-            [DataType(DataType.Currency)]
-            public decimal Amount { get; set; }
+            public CurrencyViewModel Amount { get; set; }
         }
     }
 }

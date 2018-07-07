@@ -86,7 +86,8 @@ namespace CLSoft.MyWallet.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
-            return View();
+            var viewModel = new RegisterUserViewModel();
+            return View(viewModel);
         }
 
         [HttpPost]

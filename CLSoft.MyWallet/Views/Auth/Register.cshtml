@@ -36,7 +36,7 @@
 
     <fieldset>
         <legend>Wallet</legend>
-        <p>Let's start by registering a wallet, it's free!</p>
+        <p>Let's start by registering a money account you want to monitor: that's a <strong>wallet</strong>! We suggest you start with the "cash" suggestion, but - if you <i>are</i> fancy enough - why don't you try with your bank account?</p>
 
         <div class="form-group">
             <label asp-for="StartWallet.Name"></label>
@@ -49,8 +49,7 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="StartWallet.Amount"></label>
-            <input asp-for="StartWallet.Amount" asp-format="{0:#,###.00}" class="form-control" autocomplete="on" />
+            @Html.EditorFor(m => m.StartWallet.Amount)
         </div>
     </fieldset>
 

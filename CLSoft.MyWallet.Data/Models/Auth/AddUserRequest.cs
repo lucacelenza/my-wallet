@@ -16,6 +16,13 @@ namespace CLSoft.MyWallet.Data.Models.Auth
             public string Name { get; set; }
             public string Description { get; set; }
             public DateTime RegisteredOn { get; set; }
+            public Transaction DepositTransaction { get; set; }
+
+            public class Transaction
+            {
+                public string Description { get; set; }
+                public decimal Amount { get; set; }
+            }
         }
     }
 }
