@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Application.Auth;
+using CLSoft.MyWallet.Application.Home;
 using CLSoft.MyWallet.Application.Transactions;
 using CLSoft.MyWallet.Application.Wallets;
 using CLSoft.MyWallet.Business.Url;
@@ -58,6 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IAuthControllerService, AuthControllerService>();
             services.AddScoped<IWalletsControllerService, WalletsControllerService>();
             services.AddScoped<ITransactionsControllerService, TransactionControllerService>();
+            services.AddScoped<IHomeControllerService, HomeControllerService>();
 
             return services;
         }

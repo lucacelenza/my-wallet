@@ -1,20 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CLSoft.MyWallet.Models;
 using Microsoft.AspNetCore.Authorization;
+using CLSoft.MyWallet.Application.Home;
 
 namespace CLSoft.MyWallet.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
-        public IActionResult Index()
+        private IHomeControllerService _service;
+
+        public HomeController(IHomeControllerService service)
         {
-            return View();
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = await _service.GetDashboardViewModelAsync();
+            return View(viewModel);
         }
 
         public IActionResult Error()

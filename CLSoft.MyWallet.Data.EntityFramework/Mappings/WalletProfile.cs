@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Data.Models.Wallets;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CLSoft.MyWallet.Data.EntityFramework.Mappings
 {
@@ -12,7 +10,12 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Mappings
         {
             CreateMap<AddWalletRequest, Entities.Wallet>();
             CreateMap<Entities.Wallet, Wallet>();
-            CreateMap<IEnumerable<Entities.Wallet>, Wallets>();
+
+            CreateMap<IEnumerable<Entities.Wallet>, Wallets>()
+                .ConvertUsing<WalletsTypeConverter>();
+
+            CreateMap<Entities.Wallet, Wallets.Wallet>()
+                .ForMember(d => d.CurrentBalance, o => o.ResolveUsing<CurrentBalanceValueResolver>());
         }
     }
 }

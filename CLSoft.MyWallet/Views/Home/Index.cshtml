@@ -1,4 +1,40 @@
-﻿@{
+﻿@using CLSoft.MyWallet.Models.Home
+@model DashboardViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<div>
+    @foreach (var wallet in Model.Wallets)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@wallet.Name</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@wallet.CurrentBalance</h6>
+                <p class="card-text">@wallet.Description</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+    }
+</div>
+
+<div>
+    @Model.CurrentBalance.CurrentBalance
+</div>
+
+<div>
+    <table class="table">
+        <tbody>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr>
+                <td>@transaction.Description</td>
+                <td>@transaction.Amount</td>
+                <td>@transaction.RegisteredOn</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -3,7 +3,9 @@ using CLSoft.MyWallet.Business.Encryption;
 using CLSoft.MyWallet.Business.Identity;
 using CLSoft.MyWallet.Business.Password;
 using CLSoft.MyWallet.Business.Serialization;
+using CLSoft.MyWallet.Business.Transactions;
 using CLSoft.MyWallet.Business.User;
+using CLSoft.MyWallet.Business.Wallets;
 using CLSoft.MyWallet.Components.Email;
 using CLSoft.MyWallet.Components.Encryption;
 using CLSoft.MyWallet.Components.Identity;
@@ -22,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddEmailSender();
             services.AddPasswordManager();
             services.AddAuthenticationProviders();
+            services.AddProviders();
 
             return services;
         }
@@ -63,6 +66,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IEmailTemplatesPathProvider, ConfigurationEmailTemplatesPathProvider>();
             services.AddSingleton<ISendGridApiKeyProvider, AppSecretsSendGridApiKeyProvider>();
             services.AddSingleton<IEmailSender, SendGridFluentEmailSender>();
+            return services;
+        }
+
+        private static IServiceCollection AddProviders(this IServiceCollection services)
+        {
+            services.AddScoped<IWalletsProvider, UserWalletsProvider>();
+            services.AddScoped<ITransactionsProvider, UserTransactionsProvider>();
+
             return services;
         }
     }

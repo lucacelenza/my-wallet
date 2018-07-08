@@ -51,9 +51,16 @@ namespace CLSoft.MyWallet.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(long walletId)
+        {
+            var viewModel = await _service.GetWalletAsync(walletId);
+            return View(viewModel.Name);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(long walletId)
+        public async Task<IActionResult> ConfirmDelete(long walletId)
         {
             await _service.DeleteWalletAsync(walletId);
             return View();

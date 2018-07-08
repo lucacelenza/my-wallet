@@ -8,7 +8,8 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Mappings
         public TransactionProfile()
         {
             CreateMap<AddTransactionRequest, Entities.Transaction>();
-            CreateMap<Entities.Transaction, Transaction>();
+            CreateMap<Entities.Transaction, Transaction>()
+                .ForMember(d => d.WalletName, o => o.MapFrom(s => s.Wallet.Name));
         }
     }
 }

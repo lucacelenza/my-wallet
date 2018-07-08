@@ -66,5 +66,19 @@ namespace CLSoft.MyWallet.Controllers
             await _service.EditTransactionAsync(transactionId, viewModel);
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Delete(long transactionId)
+        {
+            var transaction = await _service.GetTransactionAsync(transactionId);
+            return View(transaction.Description);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmDelete(long transactionId)
+        {
+            await _service.DeleteTransactionAsync(transactionId);
+            return View();
+        }
     }
 }
