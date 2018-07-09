@@ -31,4 +31,8 @@
     <ProjectReference Include="..\CLSoft.MyWallet.Data.EntityFramework\CLSoft.MyWallet.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\CLSoft.MyWallet.Data\CLSoft.MyWallet.Data.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
 </Project>

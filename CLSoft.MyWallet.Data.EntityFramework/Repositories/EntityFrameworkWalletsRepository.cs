@@ -47,7 +47,9 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
         public async Task<Wallets> GetAllWalletsByUserIdAsync(long userId)
         {
             var entities = await DbContext.Wallets
-                .Where(w => w.UserId.Equals(userId)).ToArrayAsync();
+                .Include(w => w.Transactions)
+                .Where(w => w.UserId.Equals(userId))
+                .ToArrayAsync();
 
             return _mapper.Map<Wallets>(entities);
         }

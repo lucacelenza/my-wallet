@@ -21,6 +21,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddCustomAuthentication();
             services.AddControllerServices();
 
+            services.AddSingleton(new Random());
+
             services.AddAutoMapper();
 
             return services;

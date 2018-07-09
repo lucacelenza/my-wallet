@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string CurrentBalance { get; set; }
+        public string Color { get; set; }
     }
 }

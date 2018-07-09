@@ -13,7 +13,8 @@ namespace CLSoft.MyWallet.Mappings.Home
         public WalletsProviderProfile()
         {
             CreateMap<Wallet, WalletViewModel>()
-                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance));
+                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance))
+                .ForMember(d => d.Color, o => o.ResolveUsing<ColorValueResolver>());
 
             CreateMap<IEnumerable<Wallet>, CurrentBalanceViewModel>()
                 .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.Select(w => w.CurrentBalance).Sum()));

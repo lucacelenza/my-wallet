@@ -60,7 +60,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
                 query = query.Where(w => w.WalletId.Equals(request.WalletId.Value));
 
             query = query
-                .Skip(request.Page * request.RecordsPerPage)
+                .Skip((request.Page - 1) * request.RecordsPerPage)
                 .Take(request.RecordsPerPage);
 
             var entities = await query.ToArrayAsync();
