@@ -6,58 +6,44 @@
 }
 
 <div class="row">
-    <div class="col">
+    <div class="col-sm-4">
         <h4>Your wallets</h4>
-        <div class="row">
-        @foreach (var wallet in Model.Wallets)
-        {
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-header">@wallet.Name</div>
-                    <div class="card-body">
-                        <p class="card-text">@wallet.Description</p>
-                        <a href="#" class="btn btn-primary">Select</a>
-                        <a href="#" class="btn btn-warning">Edit</a>
-                    </div>
-                </div>
-            </div>
-        }
+        <div class="card-columns">
+            @Html.DisplayFor(m => m.Wallets)
 
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-header">New wallet</div>
-                    <div class="card-body">
-                        <p class="card-text">Register a new wallet.</p>
-                        <a href="#" class="btn btn-primary">Select</a>
-                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New wallet</h5>
+                    <p class="card-text">Register a new wallet.</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        <h4>Current balance</h4>
-        <p>@Model.CurrentBalance.CurrentBalance</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        <h4>Last transactions</h4>
-        <table class="table">
-            <tbody>
-            @foreach (var transaction in Model.Transactions)
-            {
-                <tr>
-                    <td>@transaction.Description</td>
-                    <td>@transaction.WalletName</td>
-                    <td>@transaction.Amount</td>
-                    <td>@transaction.RegisteredOn</td>
-                </tr>
-            }
-            </tbody>
-        </table>
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col">
+                <h4>Current balance</h4>
+                <p>@Model.CurrentBalance.CurrentBalance</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4>Last transactions</h4>
+                <a asp-controller="Transactions" asp-action="Add">Register transaction</a>
+                <table class="table">
+                    <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.WalletName</td>
+                            <td>@transaction.Amount</td>
+                            <td>@transaction.RegisteredOn</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

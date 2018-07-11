@@ -6,6 +6,7 @@ using AutoMapper;
 using CLSoft.MyWallet.Application.Wallets;
 using CLSoft.MyWallet.Business.Transactions;
 using CLSoft.MyWallet.Business.Wallets;
+using CLSoft.MyWallet.Exceptions;
 using CLSoft.MyWallet.Models.Home;
 
 namespace CLSoft.MyWallet.Application.Home
@@ -24,14 +25,34 @@ namespace CLSoft.MyWallet.Application.Home
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<DashboardViewModel> GetDashboardViewModelAsync()
+        public async Task<DashboardViewModel> GetDashboardViewModelAsync(long? selectedWalletId = null)
         {
             var wallets = await _walletsProvider.GetAllWalletsAsync();
             var transactions = await _transactionsProvider.GetTransactionsAsync();
 
+            ISelectedWalletsViewModel selectedWallets;
+
+            if (selectedWalletId.HasValue)
+            {
+                if (!wallets.Where(w => w.Id.Equals(selectedWalletId.Value)).Any())
+                    throw new SelectedWalletNotFoundException();
+
+                selectedWallets = new OneSelectedWalletViewModel
+                {
+                    SelectedWallet = _mapper.Map<SelectedWalletViewModel>(
+                        _mapper.Map<WalletViewModel>(wallets.First(w => w.Id.Equals(selectedWalletId.Value)))),
+                    OtherWallets = _mapper.Map<IEnumerable<WalletViewModel>>(
+                        wallets.Where(w => !w.Id.Equals(selectedWalletId.Value)))
+                };
+            }
+            else
+            {
+                selectedWallets = _mapper.Map<AllSelectedWalletsViewModel>(wallets);
+            }
+
             return new DashboardViewModel()
             {
-                Wallets = _mapper.Map<IEnumerable<WalletViewModel>>(wallets),
+                Wallets = selectedWallets,
                 CurrentBalance = _mapper.Map<CurrentBalanceViewModel>(wallets),
                 Transactions = _mapper.Map<IEnumerable<TransactionViewModel>>(transactions)
             };

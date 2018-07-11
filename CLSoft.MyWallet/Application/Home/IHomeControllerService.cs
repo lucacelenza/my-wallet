@@ -5,6 +5,6 @@ namespace CLSoft.MyWallet.Application.Home
 {
     public interface IHomeControllerService
     {
-        Task<DashboardViewModel> GetDashboardViewModelAsync();
+        Task<DashboardViewModel> GetDashboardViewModelAsync(long? selectedWalletId = null);
     }
 }

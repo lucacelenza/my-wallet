@@ -18,10 +18,17 @@ namespace CLSoft.MyWallet.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? walletId)
         {
-            var viewModel = await _service.GetDashboardViewModelAsync();
-            return View(viewModel);
+            try
+            {
+                var viewModel = await _service.GetDashboardViewModelAsync(walletId);
+                return View(viewModel);
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Error()

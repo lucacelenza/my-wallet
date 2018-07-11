@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Business.Wallets.Models;
 using CLSoft.MyWallet.Models.Home;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Mappings.Home
 {
@@ -13,11 +11,15 @@ namespace CLSoft.MyWallet.Mappings.Home
         public WalletsProviderProfile()
         {
             CreateMap<Wallet, WalletViewModel>()
-                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance))
-                .ForMember(d => d.Color, o => o.ResolveUsing<ColorValueResolver>());
+                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance));
+
+            CreateMap<WalletViewModel, SelectedWalletViewModel>();
 
             CreateMap<IEnumerable<Wallet>, CurrentBalanceViewModel>()
                 .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.Select(w => w.CurrentBalance).Sum()));
+
+            CreateMap<IEnumerable<Wallet>, AllSelectedWalletsViewModel>()
+                .ForMember(d => d.Wallets, o => o.MapFrom(s => s));
         }
     }
 }

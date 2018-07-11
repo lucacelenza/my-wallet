@@ -1,0 +1,11 @@
+﻿@using CLSoft.MyWallet.Models.Home
+@model WalletViewModel
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentBalance</h6>
+        <p class="card-text">@Model.Description</p>
+        <a asp-action="Index" asp-route-wallet-id="@Model.Id"></a>
+    </div>
+</div>
