@@ -11,12 +11,14 @@
         <div class="card-columns">
             @Html.DisplayFor(m => m.Wallets)
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New wallet</h5>
-                    <p class="card-text">Register a new wallet.</p>
+            <a asp-controller="Wallets" asp-action="Add" class="card-anchor">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">New wallet</h5>
+                        <p class="card-text">Register a new wallet.</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="col-sm-8">

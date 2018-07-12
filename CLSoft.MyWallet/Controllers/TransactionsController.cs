@@ -39,9 +39,15 @@ namespace CLSoft.MyWallet.Controllers
             return PartialView(viewModel);
         }
 
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(long? walletId)
         {
             var viewModel = await _service.GetTransactionAsync();
+
+            if (walletId.HasValue)
+            {
+                viewModel.SelectedWalletId = walletId.Value;
+            }
+
             return View(viewModel);
         }
 

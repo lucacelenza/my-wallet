@@ -12,10 +12,10 @@ namespace CLSoft.MyWallet.Application.Wallets
     public class WalletsControllerService : IWalletsControllerService
     {
         private readonly IWalletsRepository _repository;
-        private readonly IAsyncUserIdProvider _userIdProvider;
+        private readonly IUserIdProvider _userIdProvider;
         private readonly IMapper _mapper;
 
-        public WalletsControllerService(IWalletsRepository repository, IAsyncUserIdProvider userIdProvider, IMapper mapper)
+        public WalletsControllerService(IWalletsRepository repository, IUserIdProvider userIdProvider, IMapper mapper)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _userIdProvider = userIdProvider ?? throw new ArgumentNullException(nameof(userIdProvider));
@@ -24,7 +24,7 @@ namespace CLSoft.MyWallet.Application.Wallets
 
         public async Task<WalletViewModel> GetWalletAsync(long walletId)
         {
-            var userId = await _userIdProvider.GetUserIdAsync();
+            var userId = _userIdProvider.GetUserId();
             var repositoryModel = await _repository.GetWalletByIdAsync(walletId);
 
             if (repositoryModel.UserId != userId)
@@ -53,7 +53,7 @@ namespace CLSoft.MyWallet.Application.Wallets
 
         public async Task<WalletsViewModel> GetAllWalletsAsync()
         {
-            var userId = await _userIdProvider.GetUserIdAsync();
+            var userId = _userIdProvider.GetUserId();
             var wallets = await _repository.GetAllWalletsByUserIdAsync(userId);
 
             return _mapper.Map<WalletsViewModel>(wallets);
