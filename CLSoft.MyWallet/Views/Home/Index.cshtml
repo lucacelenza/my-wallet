@@ -9,7 +9,11 @@
     <div class="col-sm-4">
         <h4>Your wallets</h4>
         <div class="card-columns">
-            @Html.DisplayFor(m => m.Wallets)
+            @if (Model.Wallets is OneSelectedWalletViewModel)
+            {
+                Html.DisplayForInterface<DashboardViewModel, AllSelectedWalletsViewModel>((m, a) => a);
+
+            }
 
             <a asp-controller="Wallets" asp-action="Add" class="card-anchor">
                 <div class="card">
