@@ -16,12 +16,12 @@ namespace CLSoft.MyWallet.Application.Transactions
     {
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly IWalletsRepository _walletsRepository;
-        private readonly IAsyncUserIdProvider _userIdProvider;
+        private readonly IUserIdProvider _userIdProvider;
         private readonly IMapper _mapper;
 
         public TransactionControllerService(
             ITransactionsRepository transactionsRepository, 
-            IWalletsRepository walletsRepository, IAsyncUserIdProvider userIdProvider,
+            IWalletsRepository walletsRepository, IUserIdProvider userIdProvider,
             IMapper mapper)
         {
             _transactionsRepository = transactionsRepository ?? throw new ArgumentNullException(nameof(transactionsRepository));
@@ -50,7 +50,7 @@ namespace CLSoft.MyWallet.Application.Transactions
 
         public async Task<TransactionViewModel> GetTransactionAsync(long? transactionId = null)
         {
-            var userId = await _userIdProvider.GetUserIdAsync();
+            var userId = _userIdProvider.GetUserId();
             var wallets = await _walletsRepository.GetAllWalletsByUserIdAsync(userId);
 
             var viewModel = new TransactionViewModel();

@@ -1,6 +1,9 @@
 ﻿@using CLSoft.MyWallet.Models.Home
 @model OneSelectedWalletViewModel
 
-@Html.DisplayForModel()
-
-<a asp-controller="Home" asp-action="Index">Select all wallets</a>
+@if (Model != null)
+{
+    @Html.DisplayFor(m => m.SelectedWallet)
+    @Html.DisplayFor(m => m.OtherWallets)
+    <a asp-controller="Home" asp-action="Index">Select all wallets</a>
+}

@@ -1,7 +1,30 @@
-﻿
+﻿@using CLSoft.MyWallet.Models.Wallets
+@model WalletViewModel
+
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Register wallet";
 }
 
-<h2>Add</h2>
+<form asp-controller="Wallets" asp-action="Add" method="post">
+    <h2>Register wallet</h2>
 
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" autofocus />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" autocomplete="on" />
+    </div>
+
+    <div class="form-group">
+        @Html.EditorFor(m => m.Amount)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section scripts {
+    <script src="~/js/validation.min.js"></script>
+}

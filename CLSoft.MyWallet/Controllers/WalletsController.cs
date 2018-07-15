@@ -26,7 +26,8 @@ namespace CLSoft.MyWallet.Controllers
 
         public IActionResult Add()
         {
-            return View();
+            var viewModel = new WalletViewModel();
+            return View(viewModel);
         }
 
         [HttpPost]

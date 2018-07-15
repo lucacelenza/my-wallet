@@ -1,4 +1,7 @@
 ﻿@using CLSoft.MyWallet.Models.Home
 @model AllSelectedWalletsViewModel
 
-@Html.DisplayForModel()
+@if (Model != null)
+{
+    @Html.DisplayFor(m => m.Wallets)
+}

@@ -32,12 +32,18 @@ namespace CLSoft.MyWallet.Application.Home
 
             ISelectedWalletsViewModel selectedWallets;
 
+            var viewModel = new DashboardViewModel()
+            {
+                CurrentBalance = _mapper.Map<CurrentBalanceViewModel>(wallets),
+                Transactions = _mapper.Map<IEnumerable<TransactionViewModel>>(transactions)
+            };
+
             if (selectedWalletId.HasValue)
             {
                 if (!wallets.Where(w => w.Id.Equals(selectedWalletId.Value)).Any())
                     throw new SelectedWalletNotFoundException();
 
-                selectedWallets = new OneSelectedWalletViewModel
+                viewModel.OneSelectedWallet = new OneSelectedWalletViewModel
                 {
                     SelectedWallet = _mapper.Map<SelectedWalletViewModel>(
                         _mapper.Map<WalletViewModel>(wallets.First(w => w.Id.Equals(selectedWalletId.Value)))),
@@ -47,15 +53,10 @@ namespace CLSoft.MyWallet.Application.Home
             }
             else
             {
-                selectedWallets = _mapper.Map<AllSelectedWalletsViewModel>(wallets);
+                viewModel.AllSelectedWallets = _mapper.Map<AllSelectedWalletsViewModel>(wallets);
             }
 
-            return new DashboardViewModel()
-            {
-                Wallets = selectedWallets,
-                CurrentBalance = _mapper.Map<CurrentBalanceViewModel>(wallets),
-                Transactions = _mapper.Map<IEnumerable<TransactionViewModel>>(transactions)
-            };
+            return viewModel;
         }
     }
 }
