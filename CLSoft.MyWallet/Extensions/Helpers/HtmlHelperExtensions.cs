@@ -18,7 +18,34 @@ namespace CLSoft.MyWallet.Extensions.Helpers
 
             var destinationType = propertyInfo.Value.GetType();
 
-            return helper.DisplayFor(expression);
+            var newExpression = new ReturnTypeVisitor<TModel>(destinationType).Visit(expression);
+
+            return helper.DisplayFor(newExpression);
+        }
+    }
+
+    public class ReturnTypeVisitor<TSource> : ExpressionVisitor
+    {
+        private readonly Type _returnValueType;
+
+        public ReturnTypeVisitor(Type returnValueType)
+        {
+            _returnValueType = returnValueType;
+        }
+
+        protected override Expression VisitLambda<T>(Expression<T> node)
+        {
+            var delegateType = typeof(Func<,>).MakeGenericType(typeof(TSource), _returnValueType);
+            return Expression.Lambda(delegateType, Visit(node.Body), node.Parameters);
+        }
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            if (node.Member.DeclaringType == typeof(TSource))
+            {
+                return Expression.Property(Visit(node.Expression), node.Member.Name);
+            }
+            return base.VisitMember(node);
         }
     }
 }
