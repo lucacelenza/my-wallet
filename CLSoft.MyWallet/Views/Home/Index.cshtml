@@ -9,8 +9,7 @@
     <div class="col-sm-4">
         <h4>Your wallets</h4>
         <div class="card-columns">
-            @Html.DisplayFor(m => m.OneSelectedWallet)
-            @Html.DisplayFor(m => m.AllSelectedWallets)
+            @Html.DisplayForInterface(m => m.Wallets)
             <a asp-controller="Wallets" asp-action="Add" class="card-anchor">
                 <div class="card">
                     <div class="card-body">
