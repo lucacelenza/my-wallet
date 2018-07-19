@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CLSoft.MyWallet.Exceptions
+namespace CLSoft.MyWallet.Models.Home
 {
-    public class SelectedWalletNotFoundException : Exception
+    public abstract class SelectedWalletsViewModel
     {
     }
 }

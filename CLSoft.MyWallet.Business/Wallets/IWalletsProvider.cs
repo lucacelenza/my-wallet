@@ -6,6 +6,6 @@ namespace CLSoft.MyWallet.Business.Wallets
 {
     public interface IWalletsProvider
     {
-        Task<IEnumerable<Wallet>> GetAllWalletsAsync();
+        Task<IEnumerable<Wallet>> GetAllWalletsAsync(long? selectedWalletId = null);
     }
 }

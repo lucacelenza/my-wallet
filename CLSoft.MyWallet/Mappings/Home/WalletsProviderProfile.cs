@@ -13,13 +13,10 @@ namespace CLSoft.MyWallet.Mappings.Home
             CreateMap<Wallet, WalletViewModel>()
                 .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance));
 
-            CreateMap<WalletViewModel, SelectedWalletViewModel>();
-
             CreateMap<IEnumerable<Wallet>, CurrentBalanceViewModel>()
                 .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.Select(w => w.CurrentBalance).Sum()));
 
-            CreateMap<IEnumerable<Wallet>, AllSelectedWalletsViewModel>()
-                .ForMember(d => d.Wallets, o => o.MapFrom(s => s));
+            CreateMap<Wallet, IWalletViewModel>().ConvertUsing<WalletViewModelTypeConverter>();
         }
     }
 }

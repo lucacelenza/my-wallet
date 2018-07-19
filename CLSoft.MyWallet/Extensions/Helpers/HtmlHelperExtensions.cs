@@ -1,51 +1,39 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using CLSoft.MyWallet.Models.Home;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Extensions.Helpers
 {
     public static class HtmlHelperExtensions
     {
-        public static IHtmlContent DisplayForInterface<TModel, TValue>(
-            this IHtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression)
+        public static IHtmlContent DisplayForInterface<TModel, TInterface>(this IHtmlHelper<TModel> helper, Expression<Func<TModel, TInterface>> expression)
         {
             var propertyInfo = helper.ViewData.GetViewDataInfo(
                 ((MemberExpression)expression.Body).Member.Name);
 
-            var destinationType = propertyInfo.Value.GetType();
+            var destination = propertyInfo.Value;
 
-            var newExpression = new ReturnTypeVisitor<TModel>(destinationType).Visit(expression);
-
-            return helper.DisplayFor(newExpression);
-        }
-    }
-
-    public class ReturnTypeVisitor<TSource> : ExpressionVisitor
-    {
-        private readonly Type _returnValueType;
-
-        public ReturnTypeVisitor(Type returnValueType)
-        {
-            _returnValueType = returnValueType;
-        }
-
-        protected override Expression VisitLambda<T>(Expression<T> node)
-        {
-            var delegateType = typeof(Func<,>).MakeGenericType(typeof(TSource), _returnValueType);
-            return Expression.Lambda(delegateType, Visit(node.Body), node.Parameters);
-        }
-
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            if (node.Member.DeclaringType == typeof(TSource))
+            if (destination is IWalletViewModel)
             {
-                return Expression.Property(Visit(node.Expression), node.Member.Name);
+                if (destination is SelectedWalletViewModel)
+                {
+                    return helper.DisplayForImplementation<TModel, TInterface, SelectedWalletViewModel>(expression);
+                }
+                else
+                {
+                    return helper.DisplayForImplementation<TModel, TInterface, WalletViewModel>(expression);
+                }
             }
-            return base.VisitMember(node);
+
+            return helper.DisplayFor(expression);
+        }
+
+        private static IHtmlContent DisplayForImplementation<TModel, TInterface, TImplementation>(this IHtmlHelper<TModel> helper, Expression<Func<TModel, TInterface>> expression)
+        {
+            var newExpression = new ReturnTypeVisitor<TModel, TImplementation>().Visit(expression);
+            return helper.DisplayFor((Expression<Func<TModel, TImplementation>>)newExpression);
         }
     }
 }
