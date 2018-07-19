@@ -18,6 +18,11 @@
                     </div>
                 </div>
             </a>
+
+            @if (Model.Wallets.Any(w => w is SelectedWalletViewModel))
+            {
+                <a asp-controller="Home" asp-action="Index">Select all wallets</a>
+            }
         </div>
     </div>
     <div class="col-sm-8">
