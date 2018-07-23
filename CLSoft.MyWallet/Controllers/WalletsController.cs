@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Wallets;
 using CLSoft.MyWallet.Models.Wallets;
@@ -19,11 +17,6 @@ namespace CLSoft.MyWallet.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Add()
         {
             var viewModel = new WalletViewModel();
@@ -35,7 +28,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> Add(WalletViewModel viewModel)
         {
             await _service.AddWalletAsync(viewModel);
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Edit(long walletId)
@@ -49,14 +42,14 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> Edit(long walletId, WalletViewModel viewModel)
         {
             await _service.EditWalletAsync(walletId, viewModel);
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(long walletId)
         {
             var viewModel = await _service.GetWalletAsync(walletId);
-            return View(viewModel.Name);
+            return PartialView(viewModel.Name);
         }
 
         [HttpPost]
@@ -64,7 +57,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> ConfirmDelete(long walletId)
         {
             await _service.DeleteWalletAsync(walletId);
-            return View();
+            return PartialView("Deleted");
         }
     }
 }

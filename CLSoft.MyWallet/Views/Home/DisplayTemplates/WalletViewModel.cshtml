@@ -1,12 +1,29 @@
 ﻿@using CLSoft.MyWallet.Models.Home
 @model WalletViewModel
 
-<a asp-action="Index" asp-route-walletId="@Model.Id" class="card-anchor">
-    <div class="card">
+@if (Model.IsSelected)
+{
+    <div class="card border-primary">
         <div class="card-body">
             <h5 class="card-title">@Model.Name</h5>
             <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentBalance</h6>
             <p class="card-text">@Model.Description</p>
+            <a asp-controller="Wallets" asp-action="Edit" asp-route-walletId="@Model.Id" class="btn btn-warning"><i class="far fa-edit fa-fw"></i></a>
+            <form asp-controller="Wallets" asp-action="Delete" asp-route-walletId="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="" data-ajax-update="" class="inline-form">
+                <button type="submit" class="btn btn-danger"><i class="far fa-times fa-fw"></i></button>
+            </form>
         </div>
     </div>
-</a>
+}
+else
+{
+    <a asp-controller="Home" asp-action="Index" asp-route-walletId="@Model.Id" class="card-anchor">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentBalance</h6>
+                <p class="card-text">@Model.Description</p>
+            </div>
+        </div>
+    </a>
+}

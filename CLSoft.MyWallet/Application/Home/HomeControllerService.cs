@@ -27,13 +27,13 @@ namespace CLSoft.MyWallet.Application.Home
         public async Task<DashboardViewModel> GetDashboardViewModelAsync(long? selectedWalletId = null)
         {
             var wallets = await _walletsProvider.GetAllWalletsAsync(selectedWalletId);
-            var transactions = await _transactionsProvider.GetTransactionsAsync();
+            var transactions = await _transactionsProvider.GetTransactionsAsync(selectedWalletId);
 
             return new DashboardViewModel()
             {
                 CurrentBalance = _mapper.Map<CurrentBalanceViewModel>(wallets),
                 Transactions = _mapper.Map<IEnumerable<TransactionViewModel>>(transactions),
-                Wallets = _mapper.Map<IEnumerable<IWalletViewModel>>(wallets)
+                Wallets = _mapper.Map<IEnumerable<WalletViewModel>>(wallets)
             };
         }
     }
