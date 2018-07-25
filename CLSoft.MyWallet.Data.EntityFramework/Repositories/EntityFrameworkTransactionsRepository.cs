@@ -59,7 +59,7 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             if (request.WalletId.HasValue)
                 query = query.Where(w => w.WalletId.Equals(request.WalletId.Value));
 
-            query = query
+            query = query.OrderBy(t => t.RegisteredOn)
                 .Skip((request.Page - 1) * request.RecordsPerPage)
                 .Take(request.RecordsPerPage);
 
@@ -76,6 +76,16 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
                 throw new DataNotFoundException();
 
             return entity;
+        }
+
+        public Transaction GetBaseTransactionByWalletId(long walletId)
+        {
+            var entity = DbContext.Transactions
+                .Where(t => t.WalletId.Equals(walletId))
+                .OrderBy(t => t.Id)
+                .First();
+
+            return _mapper.Map<Transaction>(entity);
         }
     }
 }

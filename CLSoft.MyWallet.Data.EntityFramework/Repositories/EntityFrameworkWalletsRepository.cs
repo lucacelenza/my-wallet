@@ -41,6 +41,9 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             entity.Description = request.Description;
             entity.LastUpdatedOn = request.UpdatedOn;
 
+            var baseTransactionEntity = entity.Transactions.OrderBy(t => t.Id).First();
+            baseTransactionEntity.Amount = request.BaseTransactionAmount;
+
             await DbContext.SaveChangesAsync();
         }
 

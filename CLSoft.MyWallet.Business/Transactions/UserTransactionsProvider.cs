@@ -33,7 +33,7 @@ namespace CLSoft.MyWallet.Business.Transactions
                     WalletId = walletId
                 });
 
-            return _mapper.Map<IEnumerable<Transaction>>(transactions.OrderBy(t => t.RegisteredOn));
+            return _mapper.Map<IEnumerable<Transaction>>(transactions);
         }
     }
 }

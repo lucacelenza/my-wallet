@@ -8,3 +8,7 @@
 .container-small h2 {
     text-align: center;
 }
+
+.inline-form {
+    display: inline-block;
+}

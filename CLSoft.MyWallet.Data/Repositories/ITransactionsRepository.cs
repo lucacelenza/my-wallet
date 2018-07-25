@@ -11,5 +11,6 @@ namespace CLSoft.MyWallet.Data.Repositories
         Task AddTransactionAsync(AddTransactionRequest request);
         Task EditTransactionAsync(EditTransactionRequest request);
         Task DeleteTransactionByIdAsync(long transactionId);
+        Transaction GetBaseTransactionByWalletId(long walletId);
     }
 }

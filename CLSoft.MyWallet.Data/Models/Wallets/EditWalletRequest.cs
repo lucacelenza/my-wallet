@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLSoft.MyWallet.Data.Models.Wallets
 {
@@ -10,5 +8,6 @@ namespace CLSoft.MyWallet.Data.Models.Wallets
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime UpdatedOn { get; set; }
+        public decimal BaseTransactionAmount { get; set; }
     }
 }
