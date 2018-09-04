@@ -31,6 +31,9 @@
                 <h4>Current balance</h4>
                 <p>@Model.CurrentBalance.CurrentBalance</p>
             </div>
+            <div class="col">
+                <canvas id="balance-chart"></canvas>
+            </div>
         </div>
         <div class="row">
             <div class="col">
@@ -53,3 +56,38 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script src="~/js/chart.min.js"></script>
+
+    <script>
+        var ctx = document.getElementById("balance-chart");
+
+        var chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                    label: "# of Votes",
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        "rgba(100, 99, 132, 0.2)"
+                    ],
+                    borderColor: [
+                        "rgba(100,99,132,1)"
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+}

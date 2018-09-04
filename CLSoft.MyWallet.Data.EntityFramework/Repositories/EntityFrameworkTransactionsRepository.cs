@@ -57,11 +57,21 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
             var query = DbContext.Transactions.AsQueryable();
 
             if (request.WalletId.HasValue)
-                query = query.Where(w => w.WalletId.Equals(request.WalletId.Value));
+                query = query.Where(t => t.WalletId.Equals(request.WalletId.Value));
 
-            query = query.OrderBy(t => t.RegisteredOn)
-                .Skip((request.Page - 1) * request.RecordsPerPage)
-                .Take(request.RecordsPerPage);
+            if (request.DatesRange != null)
+            {
+                query = query
+                    .Where(t => request.DatesRange.From <= t.RegisteredOn)
+                    .Where(t => t.RegisteredOn <= request.DatesRange.To);
+            }
+
+            query = query.OrderBy(t => t.RegisteredOn);
+
+            if (request.Page > 0 && request.RecordsPerPage > 0)
+            {
+                query = query.Skip((request.Page - 1) * request.RecordsPerPage).Take(request.RecordsPerPage);
+            }
 
             var entities = await query.ToArrayAsync();
             return entities.Select(e => _mapper.Map<Transaction>(e));

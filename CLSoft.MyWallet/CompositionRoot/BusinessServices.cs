@@ -3,6 +3,7 @@ using CLSoft.MyWallet.Business.Encryption;
 using CLSoft.MyWallet.Business.Identity;
 using CLSoft.MyWallet.Business.Password;
 using CLSoft.MyWallet.Business.Serialization;
+using CLSoft.MyWallet.Business.TimeBalance;
 using CLSoft.MyWallet.Business.Transactions;
 using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Business.Wallets;
@@ -72,7 +73,8 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IServiceCollection AddProviders(this IServiceCollection services)
         {
             services.AddScoped<IWalletsProvider, UserWalletsProvider>();
-            services.AddScoped<ITransactionsProvider, UserTransactionsProvider>();
+            services.AddScoped<ITransactionsProvider, TransactionsProvider>();
+            services.AddScoped<ITimeBalanceProvider, TimeBalanceProvider>();
 
             return services;
         }

@@ -9,17 +9,14 @@ using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Business.Transactions
 {
-    public class UserTransactionsProvider : ITransactionsProvider
+    public class TransactionsProvider : ITransactionsProvider
     {
         private readonly ITransactionsRepository _repository;
-        private readonly IUserIdProvider _userIdProvider;
         private readonly IMapper _mapper;
 
-        public UserTransactionsProvider(ITransactionsRepository repository,
-            IUserIdProvider userIdProvider, IMapper mapper)
+        public TransactionsProvider(ITransactionsRepository repository, IMapper mapper)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _userIdProvider = userIdProvider ?? throw new ArgumentNullException(nameof(userIdProvider));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 

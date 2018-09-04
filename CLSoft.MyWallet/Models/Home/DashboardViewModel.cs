@@ -7,5 +7,6 @@ namespace CLSoft.MyWallet.Models.Home
         public IEnumerable<WalletViewModel> Wallets { get; set; }
         public CurrentBalanceViewModel CurrentBalance { get; set; }
         public IEnumerable<TransactionViewModel> Transactions { get; set; }
+        public TimeBalanceViewModel TimeBalance { get; set; }
     }
 }
