@@ -9,12 +9,30 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
     {
         public override DateTime From => To.AddDays(-7);
 
-        internal override IDictionary<string, decimal> GetTimeBalance(IEnumerable<Transaction> transactions)
+        internal override IDictionary<string, decimal> GetTimeBalance(decimal startFromBalance, IEnumerable<Transaction> transactions)
         {
-            return transactions
-                .GroupBy(t => new { t.RegisteredOn.Day, t.RegisteredOn.Month, t.RegisteredOn.Year })
-                .Select(g => new KeyValuePair<string, decimal>(new DateTime(g.Key.Year, g.Key.Month, g.Key.Day).ToString("ddd"), g.Sum(t => t.Amount)))
-                .ToDictionary(k => k.Key, v => v.Value);
+            var days = GetDays();
+
+            var result = new Dictionary<string, decimal>();
+            var balance = startFromBalance;
+
+            foreach (var day in days)
+            {
+                balance += transactions
+                    .Where(t => t.RegisteredOn.ToString("ddd").Equals(day))
+                    .Select(t => t.Amount)
+                    .Sum();
+
+                result.Add(day, balance);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<string> GetDays()
+        {
+            for (var i = 0; i < 7; i++)
+                yield return From.AddDays(i).ToString("ddd");
         }
     }
 }

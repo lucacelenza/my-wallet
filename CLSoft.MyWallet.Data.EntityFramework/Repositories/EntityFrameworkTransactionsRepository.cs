@@ -97,5 +97,15 @@ namespace CLSoft.MyWallet.Data.EntityFramework.Repositories
 
             return _mapper.Map<Transaction>(entity);
         }
+
+        public async Task<decimal> GetBalanceUntilAsync(long? walletId, DateTime until)
+        {
+            var query = DbContext.Transactions.Where(t => t.RegisteredOn <= until);
+
+            if (walletId.HasValue)
+                query = query.Where(t => t.WalletId.Equals(walletId.Value));
+
+            return await query.SumAsync(t => t.Amount);
+        }
     }
 }

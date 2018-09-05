@@ -9,20 +9,52 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
     {
         public override DateTime From => To.AddMonths(-1);
 
-        internal override IDictionary<string, decimal> GetTimeBalance(IEnumerable<Transaction> transactions)
+        internal override IDictionary<string, decimal> GetTimeBalance(decimal startFromBalance, IEnumerable<Transaction> transactions)
         {
-            return transactions
-                .GroupBy(t => GetWeek(t.RegisteredOn, DayOfWeek.Monday))
-                .Select(g => new KeyValuePair<string, decimal>(g.Key, g.Sum(t => t.Amount)))
-                .ToDictionary(k => k.Key, v => v.Value);
+            var weeks = GetWeeks();
+
+            var result = new Dictionary<string, decimal>();
+            var balance = startFromBalance;
+
+            foreach (var week in weeks)
+            {
+                balance += transactions
+                    .Where(t => week.From <= t.RegisteredOn && t.RegisteredOn <= week.To)
+                    .Select(t => t.Amount)
+                    .Sum();
+
+                result.Add($"{week.From.ToString("dd/MM")} - {week.To.ToString("dd/MM")}", balance);
+            }
+
+            return result;
         }
 
-        public static string GetWeek(DateTime dateTime, DayOfWeek startOfWeek)
+        internal IEnumerable<DateRange> GetWeeks()
         {
-            var weekStart = dateTime.AddDays(-(int)dateTime.DayOfWeek + (int)startOfWeek).Date;
-            var weekEnd = weekStart.AddDays(7).AddSeconds(-1);
+            var from = From;
 
-            return $"{weekStart.ToString("dd/MM")} - {weekEnd.ToString("dd/MM")}";
+            while (from < To)
+            {
+                var to = from.AddDays(7);
+
+                if (to > To) to = To;
+
+                yield return new DateRange(from, to);
+
+                from = to;
+            }
+        }
+
+        internal class DateRange
+        {
+            public DateTime From { get; }
+            public DateTime To { get; }
+
+            public DateRange(DateTime from, DateTime to)
+            {
+                From = from;
+                To = to;
+            }
         }
     }
 }

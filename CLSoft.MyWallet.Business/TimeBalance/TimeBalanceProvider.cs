@@ -20,6 +20,9 @@ namespace CLSoft.MyWallet.Business.TimeBalance
 
         public async Task<IDictionary<string, decimal>> GetTimeBalanceAsync(GetTimeBalanceRequest request)
         {
+            var startFromBalance = await _repository
+                .GetBalanceUntilAsync(request.WalletId, request.SearchRange.From);
+
             var transactions = await _repository.GetTransactionsAsync(
                 new Data.Models.Transactions.GetTransactionsRequest
                 {
@@ -27,7 +30,7 @@ namespace CLSoft.MyWallet.Business.TimeBalance
                     DatesRange = new Data.Models.DatesRange(request.SearchRange.From, request.SearchRange.To)
                 });
 
-            return request.SearchRange.GetTimeBalance(transactions);
+            return request.SearchRange.GetTimeBalance(startFromBalance, transactions);
         }
     }
 }

@@ -7,9 +7,16 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
 {
     public abstract class TimeBalanceSearchRange
     {
-        public abstract DateTime From { get; }
-        public virtual DateTime To => TimeProvider.Current.Now;
+        private readonly DateTime _to;
 
-        internal abstract IDictionary<string, decimal> GetTimeBalance(IEnumerable<Transaction> transactions);
+        public abstract DateTime From { get; }
+        public virtual DateTime To { get { return _to; } }
+
+        public TimeBalanceSearchRange()
+        {
+            _to = TimeProvider.Current.Now;
+        }
+
+        internal abstract IDictionary<string, decimal> GetTimeBalance(decimal startFromBalance, IEnumerable<Transaction> transactions);
     }
 }
