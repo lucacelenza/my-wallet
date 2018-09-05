@@ -17,13 +17,17 @@ const chartScripts = [
     "node_modules/chart.js/dist/Chart.bundle.min.js"
 ];
 
+const pagesScripts = [
+    "Scripts/home-chart.js"
+];
+
 const validationScripts = [
     "node_modules/jquery-validation/dist/jquery.validate.min.js",
     "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
     "Scripts/jquery.validate.unobtrusive.bootstrap.js"
 ];
 
-gulp.task("default", ["build-vendor", "build-validation", "build-webfonts", "build-chart"]);
+gulp.task("default", ["build-vendor", "build-validation", "build-webfonts", "build-chart", "build-pages"]);
 
 gulp.task("build-vendor", ["build-vendor-css", "build-vendor-js"]);
 
@@ -55,5 +59,11 @@ gulp.task("build-validation-js", () => {
 gulp.task("build-chart", () => {
     return gulp.src(chartScripts)
         .pipe(concat("chart.min.js"))
+        .pipe(gulp.dest("wwwroot/js"));
+});
+
+gulp.task("build-pages", () => {
+    return gulp.src(pagesScripts)
+        .pipe(concat("pages.min.js"))
         .pipe(gulp.dest("wwwroot/js"));
 });
