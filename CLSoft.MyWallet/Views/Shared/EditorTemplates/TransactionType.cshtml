@@ -1,14 +1,13 @@
 ﻿@using CLSoft.MyWallet.Models.Transactions
 @model TransactionType
 
-<div class="form-check">
-    @Html.CheckBox("", Model.Equals(TransactionType.Debit))
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-    <label class="form-check-label" for="exampleRadios1">
+<div class="form-check form-check-inline">
+    <label class="form-check-label">
+        @Html.RadioButtonFor(m => m, TransactionType.Debit, new { @class = "form-check-input" }) Debit
     </label>
 </div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-    <label class="form-check-label" for="exampleRadios2">
+<div class="form-check form-check-inline">
+    <label class="form-check-label">
+        @Html.RadioButtonFor(m => m, TransactionType.Credit, new { @class = "form-check-input" }) Credit
     </label>
 </div>

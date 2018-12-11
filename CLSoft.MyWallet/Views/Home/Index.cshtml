@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var hasSelectedWallet = Model.Wallets.Any(w => w.IsSelected);
 }
 
 <div class="row">
@@ -20,7 +21,7 @@
             </div>
         </a>
 
-        @if (Model.Wallets.Any(w => w.IsSelected))
+        @if (hasSelectedWallet)
         {
             <a asp-controller="Home" asp-action="Index">Select all wallets</a>
         }
@@ -38,18 +39,25 @@
         <div class="row">
             <div class="col">
                 <h4>Last transactions</h4>
-                <a asp-controller="Transactions" asp-action="Add">Register transaction</a>
+                @if (hasSelectedWallet)
+                {
+                    <a asp-controller="Transactions" asp-action="Add" asp-route-walletId="@(Model.Wallets.First(w => w.IsSelected).Id)">Register transaction</a>
+                }
+                else
+                {
+                    <a asp-controller="Transactions" asp-action="Add">Register transaction</a>
+                }
                 <table class="table">
                     <tbody>
-                    @foreach (var transaction in Model.Transactions)
-                    {
-                        <tr>
-                            <td>@transaction.Description</td>
-                            <td>@transaction.WalletName</td>
-                            <td>@transaction.Amount</td>
-                            <td>@transaction.RegisteredOn</td>
-                        </tr>
-                    }
+                        @foreach (var transaction in Model.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.Description</td>
+                                <td>@transaction.WalletName</td>
+                                <td>@transaction.Amount</td>
+                                <td>@transaction.RegisteredOn</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
