@@ -3,65 +3,53 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    var hasSelectedWallet = Model.Wallets.Any(w => w.IsSelected);
 }
 
 <div class="row">
+    <div class="col-sm-8">
+        <h1 class="display-4">Welcome back, <br /> @Model.UserName</h1>
+    </div>
     <div class="col-sm-4">
+        <div class="col">
+            <h4>Current balance</h4>
+            <p>@Model.CurrentBalance.CurrentBalance</p>
+        </div>
+        <div class="col">
+            <canvas id="balance-chart"></canvas>
+        </div>
+    </div>
+</div>
+<div class="row" id="last-row">
+    <div class="col-sm-8">
         <h4>Your wallets</h4>
 
-        @Html.DisplayFor(m => m.Wallets)
-
-        <a asp-controller="Wallets" asp-action="Add" class="card-anchor">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New wallet</h5>
-                    <p class="card-text">Register a new wallet.</p>
-                </div>
-            </div>
-        </a>
-
-        @if (hasSelectedWallet)
+        @for (var i = 0; i < Model.Wallets.Count; i += 3)
         {
-            <a asp-controller="Home" asp-action="Index">Select all wallets</a>
+            <div class="row">
+                @for (var j = 0; j < 3 && i + j < Model.Wallets.Count; j++)
+                {
+                    @Html.DisplayFor(m => m.Wallets[i + j])
+                }
+            </div>
         }
+
     </div>
-    <div class="col-sm-8">
-        <div class="row">
-            <div class="col">
-                <h4>Current balance</h4>
-                <p>@Model.CurrentBalance.CurrentBalance</p>
-            </div>
-            <div class="col">
-                <canvas id="balance-chart"></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <h4>Last transactions</h4>
-                @if (hasSelectedWallet)
+    <div class="col-sm-4">
+        <h4>Your last transactions</h4>
+        <a asp-controller="Transactions" asp-action="Add">Register transaction</a>
+        <table class="table">
+            <tbody>
+                @foreach (var transaction in Model.Transactions)
                 {
-                    <a asp-controller="Transactions" asp-action="Add" asp-route-walletId="@(Model.Wallets.First(w => w.IsSelected).Id)">Register transaction</a>
+                    <tr>
+                        <td>@transaction.RegisteredOn</td>
+                        <td>@transaction.WalletName</td>
+                        <td>@transaction.Amount</td>
+                        <td>@transaction.Description</td>
+                    </tr>
                 }
-                else
-                {
-                    <a asp-controller="Transactions" asp-action="Add">Register transaction</a>
-                }
-                <table class="table">
-                    <tbody>
-                        @foreach (var transaction in Model.Transactions)
-                        {
-                            <tr>
-                                <td>@transaction.Description</td>
-                                <td>@transaction.WalletName</td>
-                                <td>@transaction.Amount</td>
-                                <td>@transaction.RegisteredOn</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -72,5 +60,5 @@
         var timeBalance = @(Html.Raw(Json.Serialize(Model.TimeBalance)));
     </script>
 
-    <script src="~/js/pages.min.js"></script>
+    <script src="~/js/home.min.js"></script>
 }

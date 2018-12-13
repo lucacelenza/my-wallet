@@ -2,10 +2,6 @@
 using CLSoft.MyWallet.Business.Time;
 using CLSoft.MyWallet.Data.Models.Wallets;
 using CLSoft.MyWallet.Models.Wallets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Mappings.Wallets
 {

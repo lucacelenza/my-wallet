@@ -1,29 +1,31 @@
 ﻿@using CLSoft.MyWallet.Models.Home
 @model WalletViewModel
 
-@if (Model.IsSelected)
-{
-    <div class="card border-primary">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Name</h5>
-            <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentBalance</h6>
-            <p class="card-text">@Model.Description</p>
-            <a asp-controller="Wallets" asp-action="Edit" asp-route-walletId="@Model.Id" class="btn btn-warning"><i class="far fa-edit fa-fw"></i></a>
-            <form asp-controller="Wallets" asp-action="Delete" asp-route-walletId="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="" data-ajax-update="" class="inline-form">
-                <button type="submit" class="btn btn-danger"><i class="far fa-times fa-fw"></i></button>
-            </form>
-        </div>
-    </div>
-}
-else
-{
-    <a asp-controller="Home" asp-action="Index" asp-route-walletId="@Model.Id" class="card-anchor">
+<div class="col-sm-4">
+    @if (Model.IsNewWalletViewModel)
+    {
+        <a asp-controller="Wallets" asp-action="Add" class="card-anchor">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New wallet</h5>
+                    <p class="card-text">Register a new wallet.</p>
+                </div>
+            </div>
+        </a>
+    }
+    else
+    {
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">@Model.Name</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentBalance</h6>
                 <p class="card-text">@Model.Description</p>
+                <a asp-controller="Transactions" asp-action="Index" asp-route-walletId="@Model.Id" class="btn btn-outline-primary"><i class="fa fa-search fa-fw"></i></a>
+                <a asp-controller="Wallets" asp-action="Edit" asp-route-walletId="@Model.Id" class="btn btn-outline-warning"><i class="fa fa-pencil fa-fw"></i></a>
+                <form asp-controller="Wallets" asp-action="Delete" asp-route-walletId="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-success="deleteModalLoaded()" data-ajax-mode="after" data-ajax-update="#last-row" class="inline-form">
+                    <button type="submit" class="btn btn-outline-danger"><i class="far fa-trash fa-fw"></i></button>
+                </form>
             </div>
         </div>
-    </a>
-}
+    }
+</div>

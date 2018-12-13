@@ -9,6 +9,7 @@
     "jquery": "3.3.1",
     "jquery-validation": "1.17.0",
     "jquery-validation-unobtrusive": "3.2.10",
+    "jquery-ajax-unobtrusive": "^3.2.6",
     "popper.js": "1.14.3",
     "@fortawesome/fontawesome-pro": "^5.1.1",
     "chart.js": "^2.7.2"

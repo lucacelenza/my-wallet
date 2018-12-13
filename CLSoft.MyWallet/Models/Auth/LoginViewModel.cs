@@ -15,6 +15,6 @@ namespace CLSoft.MyWallet.Models.Auth
         public string Password { get; set; }
 
         [Display(Name = "Remember me")]
-        public bool RememeberMe { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

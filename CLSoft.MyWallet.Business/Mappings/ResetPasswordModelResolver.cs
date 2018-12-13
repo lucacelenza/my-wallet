@@ -2,8 +2,6 @@
 using CLSoft.MyWallet.Business.Password.Models;
 using CLSoft.MyWallet.Business.Time;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLSoft.MyWallet.Business.Mappings
 {

@@ -14,7 +14,7 @@ namespace CLSoft.MyWallet.Mappings.Home
                 .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.CurrentBalance));
 
             CreateMap<IEnumerable<Wallet>, CurrentBalanceViewModel>()
-                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.Any(w => w.IsSelected) ? s.Where(w => w.IsSelected).Select(w => w.CurrentBalance).Sum() : s.Select(w => w.CurrentBalance).Sum()));
+                .ForMember(d => d.CurrentBalance, o => o.MapFrom(s => s.Select(w => w.CurrentBalance).Sum()));
         }
     }
 }

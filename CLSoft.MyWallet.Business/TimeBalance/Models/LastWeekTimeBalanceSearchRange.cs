@@ -29,7 +29,7 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
             return result;
         }
 
-        public IEnumerable<string> GetDays()
+        private IEnumerable<string> GetDays()
         {
             for (var i = 0; i < 7; i++)
                 yield return From.AddDays(i).ToString("ddd");

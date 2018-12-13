@@ -10,7 +10,7 @@ namespace CLSoft.MyWallet.Controllers
 {
     public class HomeController : Controller
     {
-        private IHomeControllerService _service;
+        private readonly IHomeControllerService _service;
 
         public HomeController(IHomeControllerService service)
         {
@@ -18,17 +18,10 @@ namespace CLSoft.MyWallet.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index(long? walletId)
+        public async Task<IActionResult> Index()
         {
-            try
-            {
-                var viewModel = await _service.GetDashboardViewModelAsync(walletId);
-                return View(viewModel);
-            }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
+            var viewModel = await _service.GetDashboardViewModelAsync();
+            return View(viewModel);
         }
 
         public IActionResult Error()

@@ -10,15 +10,17 @@ const vendorStyles = [
 const vendorScripts = [
     "node_modules/jquery/dist/jquery.min.js",
     "node_modules/popper.js/dist/umd/popper.min.js",
-    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"
 ];
 
 const chartScripts = [
     "node_modules/chart.js/dist/Chart.bundle.min.js"
 ];
 
-const pagesScripts = [
-    "Scripts/home-chart.js"
+const homeScripts = [
+    "Scripts/home-chart.js",
+    "Scripts/home-delete-modal.js"
 ];
 
 const validationScripts = [
@@ -29,8 +31,8 @@ const validationScripts = [
 
 gulp.task("default", ["build-vendor", "build-validation", "build-webfonts", "build-chart", "build-pages"]);
 
+gulp.task("build-pages", ["build-home"]);
 gulp.task("build-vendor", ["build-vendor-css", "build-vendor-js"]);
-
 gulp.task("build-validation", ["build-validation-js"]);
 
 gulp.task("build-webfonts", () => {
@@ -62,8 +64,8 @@ gulp.task("build-chart", () => {
         .pipe(gulp.dest("wwwroot/js"));
 });
 
-gulp.task("build-pages", () => {
-    return gulp.src(pagesScripts)
-        .pipe(concat("pages.min.js"))
+gulp.task("build-home", () => {
+    return gulp.src(homeScripts)
+        .pipe(concat("home.min.js"))
         .pipe(gulp.dest("wwwroot/js"));
 });

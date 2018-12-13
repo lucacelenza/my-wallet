@@ -23,13 +23,13 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
                     .Select(t => t.Amount)
                     .Sum();
 
-                result.Add($"{week.From.ToString("dd/MM")} - {week.To.ToString("dd/MM")}", balance);
+                result.Add($"{week.From:dd/MM} - {week.To:dd/MM}", balance);
             }
 
             return result;
         }
 
-        internal IEnumerable<DateRange> GetWeeks()
+        private IEnumerable<DateRange> GetWeeks()
         {
             var from = From;
 
@@ -45,7 +45,7 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
             }
         }
 
-        internal class DateRange
+        private class DateRange
         {
             public DateTime From { get; }
             public DateTime To { get; }

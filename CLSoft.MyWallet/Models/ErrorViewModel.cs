@@ -1,5 +1,3 @@
-using System;
-
 namespace CLSoft.MyWallet.Models
 {
     public class ErrorViewModel

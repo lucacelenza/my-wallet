@@ -1,7 +1,4 @@
 ﻿using CLSoft.MyWallet.Data.Models.Wallets;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Data.Repositories

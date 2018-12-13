@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Mappings.Home
 {
@@ -17,7 +14,7 @@ namespace CLSoft.MyWallet.Mappings.Home
 
         public string Resolve(object source, object destination, string destMember, ResolutionContext context)
         {
-            return string.Format("#{0:X6}", _random.Next(0x1000000) & 0x7F7F7F);
+            return $"#{_random.Next(0x1000000) & 0x7F7F7F:X6}";
         }
     }
 }

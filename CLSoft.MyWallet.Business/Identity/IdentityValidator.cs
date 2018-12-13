@@ -23,7 +23,7 @@ namespace CLSoft.MyWallet.Business.Identity
 
             try
             {
-                var user = await _repository
+                await _repository
                     .GetUserByEmailAddressAsync(principal.Identity.Name);
             }
             catch (DataNotFoundException)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CLSoft.MyWallet.Application.Transactions;
 using CLSoft.MyWallet.Models.Transactions;
@@ -36,7 +34,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> GetTransactions(GetTransactionsRequest request)
         {
             var viewModel = await _service.GetTransactionsAsync(request);
-            return PartialView(viewModel);
+            return PartialView("_Transactions", viewModel);
         }
 
         public async Task<IActionResult> Add(long? walletId)
@@ -76,7 +74,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> Delete(long transactionId)
         {
             var transaction = await _service.GetTransactionAsync(transactionId);
-            return View(transaction.Description);
+            return PartialView("_Delete", transaction.Description);
         }
 
         [HttpPost]
@@ -84,7 +82,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> ConfirmDelete(long transactionId)
         {
             await _service.DeleteTransactionAsync(transactionId);
-            return View();
+            return PartialView("_Deleted");
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Business.Time;
-using CLSoft.MyWallet.Models;
 using CLSoft.MyWallet.Models.Auth;
 
 namespace CLSoft.MyWallet.Mappings.Auth
@@ -11,7 +10,7 @@ namespace CLSoft.MyWallet.Mappings.Auth
         {
             CreateMap<LoginViewModel, Business.Identity.Models.SignInRequest>()
                 .ForMember(d => d.IdentityName, o => o.MapFrom(s => s.EmailAddress))
-                .ForMember(d => d.IsPersistent, o => o.MapFrom(s => s.RememeberMe));
+                .ForMember(d => d.IsPersistent, o => o.MapFrom(s => s.RememberMe));
 
             CreateMap<RegisterUserViewModel, Data.Models.Auth.AddUserRequest>()
                 .ForMember(d => d.HashedPassword, o => o.ResolveUsing<HashedStringResolver, string>(s => s.Password))
@@ -23,8 +22,7 @@ namespace CLSoft.MyWallet.Mappings.Auth
                 .ForMember(d => d.DepositTransaction, o => o.MapFrom(s => s));
 
             CreateMap<RegisterUserViewModel.StartWalletViewModel, Data.Models.Auth.AddUserRequest.Wallet.Transaction>()
-                .ForMember(d => d.Description, o => o.ResolveUsing<DepositTransactionValueResolver>())
-                .ForMember(d => d.Amount, o => o.ResolveUsing<CurrencyValueResolver, CurrencyViewModel>(s => s.Amount));
+                .ForMember(d => d.Description, o => o.ResolveUsing<DepositTransactionValueResolver>());
         }
     }
 }

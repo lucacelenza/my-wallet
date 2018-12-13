@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Data.Models.Transactions;
 using CLSoft.MyWallet.Data.Repositories;
-using CLSoft.MyWallet.Mappings;
 using CLSoft.MyWallet.Models.Transactions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

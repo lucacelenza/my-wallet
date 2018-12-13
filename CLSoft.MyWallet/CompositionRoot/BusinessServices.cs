@@ -58,6 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IServiceCollection AddAuthenticationProviders(this IServiceCollection services)
         {
             services.AddScoped<IUserIdProvider, RepositoryUserIdProvider>();
+            services.AddScoped<IUserNameProvider, RepositoryUserNameProvider>();
             services.AddScoped<IUserEmailAddressProvider, HttpContextUserEmailAddressProvider>();
             return services;
         }

@@ -2,10 +2,7 @@
 using CLSoft.MyWallet.Business.Time;
 using CLSoft.MyWallet.Data.Models.Transactions;
 using CLSoft.MyWallet.Models.Transactions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Mappings.Transactions
 {
@@ -14,6 +11,7 @@ namespace CLSoft.MyWallet.Mappings.Transactions
         public TransactionsProfile()
         {
             CreateMap<TransactionViewModel, AddTransactionRequest>()
+                .ForMember(d => d.WalletId, o => o.MapFrom(s => s.SelectedWalletId))
                 .ForMember(d => d.RegisteredOn, o => o.UseValue(TimeProvider.Current.Now));
 
             CreateMap<TransactionViewModel, EditTransactionRequest>()

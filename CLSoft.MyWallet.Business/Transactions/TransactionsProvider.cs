@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using CLSoft.MyWallet.Business.Transactions.Models;
-using CLSoft.MyWallet.Business.User;
 using CLSoft.MyWallet.Data.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CLSoft.MyWallet.Business.Transactions

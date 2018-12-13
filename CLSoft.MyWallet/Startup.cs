@@ -43,7 +43,6 @@ namespace CLSoft.MyWallet
             app.UseAuthentication();
 
             app.UseStatusCodePages(context => {
-                var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
 
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized)

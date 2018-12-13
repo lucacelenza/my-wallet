@@ -8,17 +8,8 @@ namespace CLSoft.MyWallet.Business.Time
 
         public static TimeProvider Current
         {
-            get
-            {
-                if (_current == null)
-                    _current = new SystemTimeProvider();
-
-                return _current;
-            }
-            set
-            {
-                _current = value;
-            }
+            get => _current ?? (_current = new SystemTimeProvider());
+            set => _current = value;
         }
 
         public abstract DateTime Now { get; }

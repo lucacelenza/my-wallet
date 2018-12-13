@@ -29,7 +29,7 @@ namespace CLSoft.MyWallet.Business.TimeBalance.Models
             return result;
         }
 
-        internal IEnumerable<string> GetMonths()
+        private IEnumerable<string> GetMonths()
         {
             for (var i = 0; i < 3; i++)
                 yield return From.AddMonths(i).ToString("MMM");

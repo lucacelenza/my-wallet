@@ -8,7 +8,6 @@ using CLSoft.MyWallet.Business.Password;
 using CLSoft.MyWallet.Data.Exceptions;
 using CLSoft.MyWallet.Data.Models.Auth;
 using CLSoft.MyWallet.Data.Repositories;
-using CLSoft.MyWallet.Mappings;
 using CLSoft.MyWallet.Models.Auth;
 
 namespace CLSoft.MyWallet.Application.Auth

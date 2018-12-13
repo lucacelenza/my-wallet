@@ -49,7 +49,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> Delete(long walletId)
         {
             var viewModel = await _service.GetWalletAsync(walletId);
-            return PartialView(viewModel.Name);
+            return PartialView("_Delete", viewModel.Name);
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace CLSoft.MyWallet.Controllers
         public async Task<IActionResult> ConfirmDelete(long walletId)
         {
             await _service.DeleteWalletAsync(walletId);
-            return PartialView("Deleted");
+            return PartialView("_Deleted");
         }
     }
 }
